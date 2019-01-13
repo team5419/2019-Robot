@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motion.TrajectoryPoint;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -49,7 +50,9 @@ public class DriveTrain extends Subsystem {
 		talon.configSelectedFeedbackSensor(
 			FeedbackDevice.CTRE_MagEncoder_Relative, RobotMap.PIDLoopIdx, RobotMap.TimeoutMs
 		);
-		
+    
+    //todo: most of the values are not well configured, need to research them
+
 		//set peak(max), nominal(min) outputs in %
 		talon.configNominalOutputForward(0, RobotMap.TimeoutMs);
 		talon.configNominalOutputReverse(0, RobotMap.TimeoutMs);
@@ -77,6 +80,9 @@ public class DriveTrain extends Subsystem {
     setDefaultCommand(new DriveTeleOpCommand());
   }
 
+  /**
+   * Runs the teleOp code for the drive train
+   */
   public void TeleOp() {
     double speed = -OI.driverStick.getRawAxis(1);
     double turn = OI.driverStick.getRawAxis(4);
@@ -84,6 +90,12 @@ public class DriveTrain extends Subsystem {
     setMotors(speed, turn, modeChooser.getSelected());
   }
 
+  /**
+   * 
+   * @param speed percent of max speed robot should move at
+   * @param turn how much it should stray on max speed on ither side
+   * @param mode wicth mode it should be in 
+   */
   public void setMotors(double speed, double turn, DriveTrainMode mode) {
     if (mode == DriveTrainMode.OPEN) {
       double leftSpeed = (speed+turn);
@@ -91,14 +103,20 @@ public class DriveTrain extends Subsystem {
       leftMotor.set(ControlMode.PercentOutput, leftSpeed);
       rightMotor.set(ControlMode.PercentOutput, rightSpeed);
     } else if (mode == DriveTrainMode.CLOSED) {
-      double targetVelocityRight = (speed - turn)* RobotMap.maxSpeed;
+      double targetVelocityRight = (speed - turn) * RobotMap.maxSpeed;
       double targetVelocityLeft = (speed + turn) * RobotMap.maxSpeed;
       
       rightMotor.set(ControlMode.Velocity, targetVelocityRight); 
       leftMotor.set(ControlMode.Velocity, targetVelocityLeft);  
-    } else {
-      //todo: return some sort of error
     }
+  }
+
+  /**
+   * called during autonomous to update the motion profile buffer
+   */
+  public void update() {
+    rightMotor.processMotionProfileBuffer();
+    leftMotor.processMotionProfileBuffer();
   }
 
   /**
@@ -109,5 +127,25 @@ public class DriveTrain extends Subsystem {
 		SmartDashboard.putNumber("current Speed Left", leftMotor.getSelectedSensorVelocity(RobotMap.PIDLoopIdx));
 		SmartDashboard.putNumber("current pos Right", rightMotor.getSelectedSensorPosition(RobotMap.PIDLoopIdx));
 		SmartDashboard.putNumber("current pos Left", leftMotor.getSelectedSensorPosition(RobotMap.PIDLoopIdx));
+  }
+
+  /**
+   * @param distance how far the robot should drive
+   */
+  public void drive(double distance) {
+    //1.0 keeps streaming points, once at set position goes to next point
+		//2.0 stops it at whatever point is at right now
+		leftMotor.set(ControlMode.MotionProfile, 1.0);
+    rightMotor.set(ControlMode.MotionProfile, 1.0);
+    
+    TrajectoryPoint point = new TrajectoryPoint();
+		point.position = distance;
+		point.velocity = RobotMap.maxSpeed;
+		point.zeroPos = true;
+		point.isLastPoint = true;
+    point.profileSlotSelect0 = RobotMap.PIDLoopIdx;
+    
+    leftMotor.pushMotionProfileTrajectory(point);
+    rightMotor.pushMotionProfileTrajectory(point);
   }
 }
