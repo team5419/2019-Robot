@@ -130,22 +130,36 @@ public class DriveTrain extends Subsystem {
   }
 
   /**
-   * @param distance how far the robot should drive
+   * 
+   * @param distance the distance the robot should drive
    */
   public void drive(double distance) {
-    //1.0 keeps streaming points, once at set position goes to next point
+		drive(new double[] {distance});
+	}
+  
+  /**
+   * 
+   * @param distances list of distances the robot should drive
+   */
+	public void drive(double[] distances) {
+		//1.0 keeps streaming points, once at set position goes to next point
 		//2.0 stops it at whatever point is at right now
-		leftMotor.set(ControlMode.MotionProfile, 1.0);
+		//Use 2.0 on last point of auto
+		//Also there is a flag that isLast
+    leftMotor.set(ControlMode.MotionProfile, 1.0);
     rightMotor.set(ControlMode.MotionProfile, 1.0);
-    
-    TrajectoryPoint point = new TrajectoryPoint();
-		point.position = distance;
-		point.velocity = RobotMap.maxSpeed;
-		point.zeroPos = true;
-		point.isLastPoint = true;
-    point.profileSlotSelect0 = RobotMap.PIDLoopIdx;
-    
-    leftMotor.pushMotionProfileTrajectory(point);
-    rightMotor.pushMotionProfileTrajectory(point);
-  }
+
+		for (int i = 0; i < distances.length; i++) {
+      TrajectoryPoint point = new TrajectoryPoint();
+      
+			point.position = distances[i];
+			point.velocity = RobotMap.maxSpeed;
+			point.zeroPos = i == 0; // zero if first point
+			point.isLastPoint = i + 1 == distances.length; // cheak if last point
+      point.profileSlotSelect0 = RobotMap.PIDLoopIdx;
+      
+      leftMotor.pushMotionProfileTrajectory(point);
+      rightMotor.pushMotionProfileTrajectory(point);
+		}
+	}
 }
