@@ -6,12 +6,14 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Elevator;
 
 public class Robot extends TimedRobot {
   private Command autoCommand;
   private final SendableChooser<Command> autoCommandChooser = new SendableChooser<>();
 
   public static DriveTrain driveTrain;
+  public static Elevator elevator;
 
   /**
    * This function is run when the robot is first started up and is

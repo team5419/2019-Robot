@@ -3,9 +3,9 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class DriveAutoCommand extends Command {
-  public DriveAutoCommand() {
-    requires(Robot.driveTrain);
+public class ElevatorAutoCommand extends Command {
+  public ElevatorAutoCommand() {
+    requires(Robot.elevator);
   }
 
   // Called just before this Command runs the first time
@@ -16,17 +16,18 @@ public class DriveAutoCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    Robot.elevator.teleop();
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return Robot.driveTrain.isMotionProfileFinished();
+    return false;
   }
 
+  // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.driveTrain.stopMotionProfile();
   }
 
   @Override

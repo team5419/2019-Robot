@@ -1,12 +1,10 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motion.BufferedTrajectoryPointStream;
-import com.ctre.phoenix.motion.MotionProfileStatus;
 import com.ctre.phoenix.motion.TrajectoryPoint;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -85,7 +83,7 @@ public class DriveTrain extends Subsystem {
   /**
    * Runs the teleOp code for the drive train
    */
-  public void TeleOp() {
+  public void teleop() {
     double speed = -OI.driverStick.getRawAxis(1);
     double turn = OI.driverStick.getRawAxis(4);
     
