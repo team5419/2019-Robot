@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motion.BufferedTrajectoryPointStream;
+import com.ctre.phoenix.motion.MotionProfileStatus;
 import com.ctre.phoenix.motion.TrajectoryPoint;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -112,14 +114,6 @@ public class DriveTrain extends Subsystem {
   }
 
   /**
-   * called during autonomous to update the motion profile buffer
-   */
-  public void update() {
-    rightMotor.processMotionProfileBuffer();
-    leftMotor.processMotionProfileBuffer();
-  }
-
-  /**
    * Dumps data onto smart dash board
    */
   public void dump() {
@@ -142,13 +136,8 @@ public class DriveTrain extends Subsystem {
    * @param distances list of distances the robot should drive
    */
 	public void drive(double[] distances) {
-		//1.0 keeps streaming points, once at set position goes to next point
-		//2.0 stops it at whatever point is at right now
-		//Use 2.0 on last point of auto
-		//Also there is a flag that isLast
-    leftMotor.set(ControlMode.MotionProfile, 1.0);
-    rightMotor.set(ControlMode.MotionProfile, 1.0);
-
+    BufferedTrajectoryPointStream stream = new BufferedTrajectoryPointStream();
+    
 		for (int i = 0; i < distances.length; i++) {
       TrajectoryPoint point = new TrajectoryPoint();
       
@@ -158,8 +147,22 @@ public class DriveTrain extends Subsystem {
 			point.isLastPoint = i + 1 == distances.length; // cheak if last point
       point.profileSlotSelect0 = RobotMap.PIDLoopIdx;
       
-      leftMotor.pushMotionProfileTrajectory(point);
-      rightMotor.pushMotionProfileTrajectory(point);
-		}
-	}
+      stream.Write(point);
+    }
+
+    leftMotor.startMotionProfile(stream, distances.length, ControlMode.MotionProfile);
+    rightMotor.startMotionProfile(stream, distances.length, ControlMode.MotionProfile);
+  }
+
+  public boolean isMotionProfileFinished() {
+    return (
+      rightMotor.isMotionProfileFinished() &&
+      leftMotor.isMotionProfileFinished()
+    );
+  }
+
+  public void stopMotionProfile() {
+    rightMotor.set(ControlMode.Velocity, 0);
+    leftMotor.set(ControlMode.Velocity, 0);
+  }
 }
