@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.ElevatorAutoCommand;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Elevator;
 
@@ -21,9 +22,13 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    SmartDashboard.putData("Auto choices", autoCommandChooser);
+    // initilize subsystems
+    //driveTrain = new DriveTrain();
+    elevator = new Elevator();
 
-    driveTrain = new DriveTrain();
+    // add autonumous modes to chooser
+    autoCommandChooser.setDefaultOption("test elevator", new ElevatorAutoCommand());
+    SmartDashboard.putData("Auto choices", autoCommandChooser);
   }
 
   /**
@@ -33,7 +38,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    driveTrain.dump();
+    //driveTrain.dump();
+    elevator.dump();
   }
 
   /**
@@ -43,6 +49,8 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     autoCommand = autoCommandChooser.getSelected();
+    System.out.print("Running: ");
+    System.out.println(autoCommand);
     autoCommand.start();
   }
 
@@ -52,7 +60,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
-    
+    Scheduler.getInstance().run();
   }
 
   /**

@@ -17,10 +17,10 @@ enum DriveTrainMode {
 }
 
 public class DriveTrain extends Subsystem {
-  public TalonSRX leftMotor = new TalonSRX(RobotMap.leftBackMotor);
-  public TalonSRX rightMotor = new TalonSRX(RobotMap.rightBackMotor);
-  public TalonSRX leftMotorFollower = new TalonSRX(RobotMap.leftFrontMotor);
-  public TalonSRX rightMotorFollower = new TalonSRX(RobotMap.rightFrontMotor);
+  public TalonSRX leftMotor;//= new TalonSRX(RobotMap.leftBackMotor);
+  public TalonSRX rightMotor; //= new TalonSRX(RobotMap.rightBackMotor);
+  public TalonSRX leftMotorFollower; //= new TalonSRX(RobotMap.leftFrontMotor);
+  public TalonSRX rightMotorFollower; // = new TalonSRX(RobotMap.rightFrontMotor);
 
   private final SendableChooser<DriveTrainMode> modeChooser = new SendableChooser<>();
 
@@ -115,10 +115,10 @@ public class DriveTrain extends Subsystem {
    * Dumps data onto smart dash board
    */
   public void dump() {
-    SmartDashboard.putNumber("current Speed Right", rightMotor.getSelectedSensorVelocity(RobotMap.PIDLoopIdx));
-		SmartDashboard.putNumber("current Speed Left", leftMotor.getSelectedSensorVelocity(RobotMap.PIDLoopIdx));
-		SmartDashboard.putNumber("current pos Right", rightMotor.getSelectedSensorPosition(RobotMap.PIDLoopIdx));
-		SmartDashboard.putNumber("current pos Left", leftMotor.getSelectedSensorPosition(RobotMap.PIDLoopIdx));
+    SmartDashboard.putNumber("current speed right", rightMotor.getSelectedSensorVelocity(RobotMap.PIDLoopIdx));
+		SmartDashboard.putNumber("current speed left", leftMotor.getSelectedSensorVelocity(RobotMap.PIDLoopIdx));
+		SmartDashboard.putNumber("current pos right", rightMotor.getSelectedSensorPosition(RobotMap.PIDLoopIdx));
+		SmartDashboard.putNumber("current pos left", leftMotor.getSelectedSensorPosition(RobotMap.PIDLoopIdx));
   }
 
   /**

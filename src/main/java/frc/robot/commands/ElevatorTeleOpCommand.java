@@ -2,23 +2,21 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.subsystems.Elevator;
 
-public class ElevatorAutoCommand extends Command {
-  public ElevatorAutoCommand() {
+public class ElevatorTeleOpCommand extends Command {
+  public ElevatorTeleOpCommand() {
     requires(Robot.elevator);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.elevator.goToPositon(Elevator.ElevatorPosition.UP);  
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-  
+    Robot.elevator.teleop();
   }
 
   // Make this return true when this Command no longer needs to run execute()
