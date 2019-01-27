@@ -80,7 +80,7 @@ public class Elevator extends Subsystem {
 
   public boolean isPositon(ElevatorPosition position) {
     /*int pos = motor.getSelectedSensorPosition(RobotMap.PIDLoopIdx);
-    if (position == ElevatorPosition.UP) {
+    if (position == ElevatorPosition.DOWN) {
       return pos == 0;
     } else if (position == ElevatorPosition.UP) {
       return pos == RobotMap.elevatorMaxPosition;

@@ -23,7 +23,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     // initilize subsystems
-    //driveTrain = new DriveTrain();
+    driveTrain = new DriveTrain();
     elevator = new Elevator();
 
     // add autonumous modes to chooser
@@ -38,7 +38,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    //driveTrain.dump();
+    driveTrain.dump();
     elevator.dump();
   }
 

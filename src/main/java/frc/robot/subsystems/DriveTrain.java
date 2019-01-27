@@ -5,6 +5,8 @@ import com.ctre.phoenix.motion.TrajectoryPoint;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -17,10 +19,10 @@ enum DriveTrainMode {
 }
 
 public class DriveTrain extends Subsystem {
-  public TalonSRX leftMotor;//= new TalonSRX(RobotMap.leftBackMotor);
-  public TalonSRX rightMotor; //= new TalonSRX(RobotMap.rightBackMotor);
-  public TalonSRX leftMotorFollower; //= new TalonSRX(RobotMap.leftFrontMotor);
-  public TalonSRX rightMotorFollower; // = new TalonSRX(RobotMap.rightFrontMotor);
+  public TalonSRX leftMotor = new TalonSRX(RobotMap.leftBackMotor);
+  public TalonSRX rightMotor = new TalonSRX(RobotMap.rightBackMotor);
+  public VictorSPX leftMotorFollower = new VictorSPX(RobotMap.leftFrontMotor);
+  public VictorSPX rightMotorFollower  = new VictorSPX(RobotMap.rightFrontMotor);
 
   private final SendableChooser<DriveTrainMode> modeChooser = new SendableChooser<>();
 
