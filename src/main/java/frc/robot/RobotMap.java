@@ -5,9 +5,15 @@ package frc.robot;
  */
 public class RobotMap {
     // motion configuration
-    public static int maxSpeed = 5189; // sensor units / 100ms
-    public static int Acceleration = 1000; // sensor units / 100ms / sec
-    public static int elevatorMaxPosition = 1000; // sensor units
+    public static int driveTrainMaxVelocity = 5189; // (su / 100ms)
+    public static int driveTrainMaxAcceleration = 1000; // (su / 100ms / 100ms)
+    public static int driveTrainMaxJerk = 1000; // (su / 100ms / 100ms / 100ms)
+
+    public static double driveTrainWheelDistance = 10; // (meters)
+    public static double driveTrainWheelCircumference = -1; // 
+    public static double driveTrainTicksPerRevelution = -1; // 
+
+    public static double elevatorMaxPosition = 1000; // (su)
 
     // ids of talonSRXs
     public static int leftBackMotor = -1; // BS NUMBER!

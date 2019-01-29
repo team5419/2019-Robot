@@ -13,6 +13,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
 import frc.robot.RobotMap;
 import frc.robot.commands.DriveTeleOpCommand;
+import frc.robot.util.NDiMath;
+import jaci.pathfinder.Pathfinder;
+import jaci.pathfinder.Trajectory;
+import jaci.pathfinder.Waypoint;
+import jaci.pathfinder.modifiers.TankModifier;
 
 enum DriveTrainMode {
   OPEN, CLOSED
@@ -23,6 +28,15 @@ public class DriveTrain extends Subsystem {
   public TalonSRX rightMotor = new TalonSRX(RobotMap.rightBackMotor);
   public VictorSPX leftMotorFollower = new VictorSPX(RobotMap.leftFrontMotor);
   public VictorSPX rightMotorFollower  = new VictorSPX(RobotMap.rightFrontMotor);
+
+  public Trajectory.Config ProfilerConfig = new Trajectory.Config(
+    Trajectory.FitMethod.HERMITE_CUBIC, // fit nethod 
+    Trajectory.Config.SAMPLES_LOW, // sample count
+    0.05, // time steps (m/s)
+    RobotMap.driveTrainMaxVelocity, // max velocity (m/s)
+    2, // max acceleration (m/s/s)
+    60.0 // max jerk (m/s/s/s)
+  );
 
   private final SendableChooser<DriveTrainMode> modeChooser = new SendableChooser<>();
 
@@ -68,8 +82,8 @@ public class DriveTrain extends Subsystem {
 		talon.config_kD(RobotMap.PIDLoopIdx, RobotMap.PIDkD, RobotMap.TimeoutMs);
 		
 		//talon.configSelectedFeedbackSensor(0,0,0);
-		talon.configMotionAcceleration(RobotMap.Acceleration, RobotMap.TimeoutMs);
-		talon.configMotionCruiseVelocity(RobotMap.maxSpeed, RobotMap.TimeoutMs);
+		talon.configMotionAcceleration(RobotMap.driveTrainMaxAcceleration, RobotMap.TimeoutMs);
+		talon.configMotionCruiseVelocity(RobotMap.driveTrainMaxVelocity, RobotMap.TimeoutMs);
 		
 		talon.configMotionProfileTrajectoryPeriod(100000,100000);
   }
@@ -105,16 +119,25 @@ public class DriveTrain extends Subsystem {
       leftMotor.set(ControlMode.PercentOutput, leftSpeed);
       rightMotor.set(ControlMode.PercentOutput, rightSpeed);
     } else if (mode == DriveTrainMode.CLOSED) {
-      double targetVelocityRight = (speed - turn) * RobotMap.maxSpeed;
-      double targetVelocityLeft = (speed + turn) * RobotMap.maxSpeed;
+      double targetVelocityRight = (speed - turn) * RobotMap.driveTrainMaxVelocity;
+      double targetVelocityLeft = (speed + turn) * RobotMap.driveTrainMaxVelocity;
       
       rightMotor.set(ControlMode.Velocity, targetVelocityRight); 
       leftMotor.set(ControlMode.Velocity, targetVelocityLeft);  
     }
   }
 
+  public Trajectory[] pathfind(Waypoint[] points) {
+    Trajectory trajectory = Pathfinder.generate(points, this.ProfilerConfig);
+    TankModifier modifier = new TankModifier(trajectory);
+    modifier.modify(RobotMap.driveTrainWheelDistance);
+    Trajectory left  = modifier.getLeftTrajectory();
+    Trajectory right = modifier.getRightTrajectory();
+    return new Trajectory[] {left, right};
+  }
+
   /**
-   * Dumps data onto smart dash board
+   * Dumps data out onto smart dash board.
    */
   public void dump() {
     SmartDashboard.putNumber("current speed right", rightMotor.getSelectedSensorVelocity(RobotMap.PIDLoopIdx));
@@ -125,33 +148,51 @@ public class DriveTrain extends Subsystem {
 
   /**
    * 
-   * @param distance the distance the robot should drive
+   * @param distance the distance the robot should drive.
    */
   public void drive(double distance) {
-		drive(new double[] {distance});
+    //drive(new double[] {distance});
 	}
   
   /**
    * 
    * @param distances list of distances the robot should drive
    */
-	public void drive(double[] distances) {
-    BufferedTrajectoryPointStream stream = new BufferedTrajectoryPointStream();
+	public void drive(Trajectory[] trajectorys) {
+    BufferedTrajectoryPointStream leftStream = new BufferedTrajectoryPointStream();
+    BufferedTrajectoryPointStream rightStream = new BufferedTrajectoryPointStream();
+
+    int length = trajectorys[0].length();
     
-		for (int i = 0; i < distances.length; i++) {
-      TrajectoryPoint point = new TrajectoryPoint();
+    Trajectory.Segment leftSegment;
+    Trajectory.Segment rightSegment;
+    TrajectoryPoint leftPoint;
+    TrajectoryPoint rightPoint;
+
+		for (int i = 0; i < length; i++) {
+      leftPoint = new TrajectoryPoint();
+      rightPoint = new TrajectoryPoint();
+      leftSegment = trajectorys[0].get(i);
+      rightSegment = trajectorys[1].get(i);
       
-			point.position = distances[i];
-			point.velocity = RobotMap.maxSpeed;
-			point.zeroPos = i == 0; // zero if first point
-			point.isLastPoint = i + 1 == distances.length; // cheak if last point
-      point.profileSlotSelect0 = RobotMap.PIDLoopIdx;
+			leftPoint.position = NDiMath.feetToEncoderTicks(leftSegment.position);
+			leftPoint.velocity = NDiMath.revsPerMinuteToTicksPerTenth(leftSegment.velocity);
+			leftPoint.zeroPos = i == 0; // zero if first point
+			leftPoint.isLastPoint = i + 1 == trajectorys[0].length(); // cheak if last point
+      leftPoint.profileSlotSelect0 = RobotMap.PIDLoopIdx;
+
+      rightPoint.position = NDiMath.feetToEncoderTicks(rightSegment.position);
+			rightPoint.velocity = NDiMath.revsPerMinuteToTicksPerTenth(rightSegment.velocity);
+			rightPoint.zeroPos = i == 0; // zero if first point
+			rightPoint.isLastPoint = i + 1 == trajectorys[0].length(); // cheak if last point
+      rightPoint.profileSlotSelect0 = RobotMap.PIDLoopIdx;
       
-      stream.Write(point);
+      leftStream.Write(leftPoint);
+      rightStream.Write(rightPoint);
     }
 
-    leftMotor.startMotionProfile(stream, distances.length, ControlMode.MotionProfile);
-    rightMotor.startMotionProfile(stream, distances.length, ControlMode.MotionProfile);
+    leftMotor.startMotionProfile(leftStream, length, ControlMode.MotionProfile);
+    rightMotor.startMotionProfile(rightStream, length, ControlMode.MotionProfile);
   }
 
   public boolean isMotionProfileFinished() {
