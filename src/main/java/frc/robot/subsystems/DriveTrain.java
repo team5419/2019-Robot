@@ -36,16 +36,28 @@ public class DriveTrain extends Subsystem {
     Trajectory.FitMethod.HERMITE_CUBIC, // fit nethod 
     Trajectory.Config.SAMPLES_LOW, // sample count
     0.05, // time steps (m/s)
-    RobotMap.driveTrainMaxVelocity, // max velocity (m/s)
-    2, // max acceleration (m/s/s)
-    60.0 // max jerk (m/s/s/s)
+    NDiUnits.compoundConvsion(
+      NDiUnits.encoderTicksToMeters,
+      NDiUnits.tenthsToSeconds,
+      RobotMap.driveTrainMaxVelocity
+    ), // max velocity (m/s)
+    NDiUnits.compoundConvsion(
+      NDiUnits.encoderTicksToMeters,
+      NDiUnits.tenthsToSeconds * NDiUnits.tenthsToSeconds,
+      RobotMap.driveTrainMaxAcceleration
+    ), // max acceleration (m/s/s)
+    NDiUnits.compoundConvsion(
+      NDiUnits.encoderTicksToMeters,
+      NDiUnits.tenthsToSeconds * NDiUnits.tenthsToSeconds * NDiUnits.tenthsToSeconds,
+      RobotMap.driveTrainMaxAcceleration
+    ) // max jerk (m/s/s/s)
   );
 
   private final SendableChooser<DriveTrainMode> modeChooser = new SendableChooser<>();
 
   public DriveTrain() {
     super();
-    
+
     // set of leader talons
     setUpTalon(leftMotor);
     setUpTalon(rightMotor);
@@ -179,13 +191,14 @@ public class DriveTrain extends Subsystem {
       rightSegment = trajectorys[1].get(i);
       
 			leftPoint.position = NDiUnits.feetToEncoderTicks(leftSegment.position);
-			leftPoint.velocity = NDiUnits.revsPerMinuteToTicksPerTenth(leftSegment.velocity);
+      leftPoint.velocity = leftSegment.velocity; //TODO: conversions
+
 			leftPoint.zeroPos = i == 0; // zero if first point
 			leftPoint.isLastPoint = i + 1 == trajectorys[0].length(); // cheak if last point
       leftPoint.profileSlotSelect0 = RobotMap.PIDLoopIdx;
 
-      rightPoint.position = NDiUnits.feetToEncoderTicks(rightSegment.position);
-			rightPoint.velocity = NDiUnits.revsPerMinuteToTicksPerTenth(rightSegment.velocity);
+      rightPoint.position = NDiUnits.metersToEncoderTicks(rightSegment.position);
+			rightPoint.velocity = rightSegment.velocity; //TODO: conversions
 			rightPoint.zeroPos = i == 0; // zero if first point
 			rightPoint.isLastPoint = i + 1 == trajectorys[0].length(); // cheak if last point
       rightPoint.profileSlotSelect0 = RobotMap.PIDLoopIdx;

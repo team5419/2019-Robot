@@ -4,17 +4,18 @@ package frc.robot;
  * Robot wide constants
  */
 public class RobotMap {
-    // motion configuration
+    // drive train motion configuration
     public static int driveTrainMaxVelocity = 5189; // (et / 100ms)
     public static int driveTrainMaxAcceleration = 1000; // (et / 100ms / 100ms)
     public static int driveTrainMaxJerk = 1000; // (et / 100ms / 100ms / 100ms)
 
-    public static double driveTrainWheelDistance = 10; // (meters)
-    public static double driveTrainWheelCircumference = -1; // 
-    public static double driveTrainTicksPerRevelution = -1; // 
+    public static double driveTrainWheelDistance = 10; // (inch)
+    public static double driveTrainWheelDiameter = 6; // (inch)
+    public static double driveTrainWheelCircumference = 2 * Math.PI * driveTrainWheelDiameter; // (inch)
+    public static double driveTrainTicksPerRevelution = -1; //
 
+    // elevator motion configuration
     public static double elevatorMaxPosition = 1000; // (et)
-
     public static double robotSlowModeThreshold = 100; // (et)
     public static int slowModeMaxVelocity = 100;
 

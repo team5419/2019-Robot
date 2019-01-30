@@ -2,88 +2,134 @@ package frc.util;
 
 import frc.robot.RobotMap;
 
+/**
+ * natural disasters unit conversion class
+ */
 public class NDiUnits {
-    /* INCHS CONVERSION */
-
-    public static double inchToFeet = 12;
-    public static double inchToFeet(double inch) {
-        return inch * inchToFeet;
+    /**
+     * ratio of inchs to feet
+     */
+    public static double inchsToFeet = 12;
+    public static double inchsToFeet(double inchs) {
+        return inchs * inchsToFeet;
     }
 
-    public static double inchToEncoderTicks = 1f / RobotMap.driveTrainWheelCircumference * RobotMap.driveTrainTicksPerRevelution;
-    public static double inchToEncoderTicks(double inch) {
-        return inch * inchToEncoderTicks;
+    /**
+     * ratio of inchs to encoder ticks
+     */
+    public static double inchsToEncoderTicks = 1f / RobotMap.driveTrainWheelCircumference * RobotMap.driveTrainTicksPerRevelution;
+    public static double inchsToEncoderTicks(double inchs) {
+        return inchs * inchsToEncoderTicks;
     }
 
-    public static double inchToMeter = 0.0254f;
-    public static double inchToMeter(double inch) {
-        return inch * inchToMeter;
+    /**
+     * ratio of inchs to meters
+     */
+    public static double inchsToMeters = 0.0254f;
+    public static double inchsToMeters(double inchs) {
+        return inchs * inchsToMeters;
     }
 
-    /* FEET CONVERSION */
-
-    public static double feetToInch = 1f / 12f;
-    public static double feetToInch(double feet) {
-        return feet * feetToInch;
+    /**
+     * ratio of feet to inchs
+     */
+    public static double feetToInchs = 1f / 12f;
+    public static double feetToInchs(double feet) {
+        return feet * feetToInchs;
     }
 
-    public static double feetToMeter = 0.3048f;
-    public static double feetToMeter(double feet) {
-        return feet * feetToMeter;
+    /**
+     * ratio of feet to meters
+     */
+    public static double feetToMeters = 0.3048f;
+    public static double feetToMeters(double feet) {
+        return feet * feetToMeters;
     }
 
-    public static double feetToEncoderTicks = inchToEncoderTicks * inchToFeet;
+    /**
+     * ratio of feet to encoder ticks
+     */
+    public static double feetToEncoderTicks = inchsToEncoderTicks * inchsToFeet;
     public static double feetToEncoderTicks(double feet) {
         return feet * feetToEncoderTicks;
     }
 
-    /* METER CONVERSION */
+    /* METERS CONVERSION */
 
-    public static double meterToInch = 1f / inchToMeter;
-    public static double meterToInch(double feet) {
-        return feet * meterToInch;
-    }
-
-    public static double meterToFeet = 1f / feetToMeter;
-    public static double meterToFeet(double feet) {
-        return feet * meterToFeet;
-    }
-
-    public static double meterToEncoderTicks = inchToEncoderTicks * inchToMeter;
-    public static double meterToEncoderTicks(double feet) {
-        return feet * meterToEncoderTicks;
-    }
-
-    /* ENCODER TICKS CONVERSION */
-
-    public static double encoderTicksToInch = 1f / inchToEncoderTicks;
-    public static double encoderTicksToInch(double encoderTicks) {
-        return encoderTicks * encoderTicks;
-    }
-
-    public static double encoderTicksToFeet = 1f / feetToEncoderTicks;
-    public static double encoderTicksToFeet(double encoderTicks) {
-        return encoderTicks * encoderTicks;
-    }
-
-    public static double encoderTicksToMeter = 1f / meterToEncoderTicks;
-    public static double encoderTicksToMeter(double encoderTicks) {
-        return encoderTicks * encoderTicks;
-    }
-
-    /* */
-
-    public static double revsPerMinuteToTicksPerTenth(double revPerMinute) {
-        return 0.0;
+    /**
+     * ratio of meters to inchs
+     */
+    public static double metersToInchs = 1f / inchsToMeters;
+    public static double metersToInchs(double feet) {
+        return feet * metersToInchs;
     }
 
     /**
-     * Distance:
-     * - Encoder Ticks
-     * - inch
-     * - meter
-     * Distance / Time:
-     * - seconds
-     * - hundths
+     * ratio of meters to feet
      */
+    public static double metersToFeet = 1f / feetToMeters;
+    public static double metersToFeet(double feet) {
+        return feet * metersToFeet;
+    }
+
+    /**
+     * ratio of meters to encoder ticks
+     */
+    public static double metersToEncoderTicks = inchsToEncoderTicks * inchsToMeters;
+    public static double metersToEncoderTicks(double feet) {
+        return feet * metersToEncoderTicks;
+    }
+
+    /**
+     * ratio of encoder ticks to inchs
+     */
+    public static double encoderTicksToInchs = 1f / inchsToEncoderTicks;
+    public static double encoderTicksToInchs(double encoderTicks) {
+        return encoderTicks * encoderTicksToInchs;
+    }
+
+    /**
+     * ratio of encoder ticks to feet
+     */
+    public static double encoderTicksToFeet = 1f / feetToEncoderTicks;
+    public static double encoderTicksToFeet(double encoderTicks) {
+        return encoderTicks * encoderTicksToFeet;
+    }
+
+    /**
+     * ratio of encoder ticks to meters
+     */
+    public static double encoderTicksToMeters = 1f / metersToEncoderTicks;
+    public static double encoderTicksToMeters(double encoderTicks) {
+        return encoderTicks * encoderTicksToMeters;
+    }
+
+    /**
+     * ratio of encoder seconds to tenths of a second (100ms)
+     */
+    public static double secondsToTenths = 10;
+    public static double secondsToTenths(double seconds) {
+        return seconds * secondsToTenths;
+    }
+
+    /**
+     * ratio of tenths of a second (100ms) to seconds
+     */
+    public static double tenthsToSeconds = 1f / 10f;
+    public static double tenthsToSeconds(double tenths) {
+        return tenths * tenthsToSeconds;
+    }
+
+    /* MULTI CONVERSION */
+
+    /**
+     * Convert a compond unit to a new type using {@paramref  a} / {@paramref  b}.
+     * @param a the conversion to perform on numerator
+     * @param b the conversion to perform on denominator
+     * @param units to units to convers
+     * @return converted units
+     */
+    public static double compoundConvsion(double a, double b, double units) {
+        return units * a / b;
+    }
 }
