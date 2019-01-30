@@ -79,12 +79,15 @@ public class Elevator extends Subsystem {
     }
   }
 
+  public double getPosition() {
+    return motor.getSelectedSensorPosition(RobotMap.PIDLoopIdx);
+  }
+
   public boolean isPositon(ElevatorPosition position) {
-    int pos = motor.getSelectedSensorPosition(RobotMap.PIDLoopIdx);
     if (position == ElevatorPosition.DOWN) {
-      return pos == 0;
+      return getPosition() == 0;
     } else if (position == ElevatorPosition.UP) {
-      return pos == RobotMap.elevatorMaxPosition;
+      return getPosition() == RobotMap.elevatorMaxPosition;
     } else {
       return false;
     }

@@ -11,9 +11,10 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.commands.DriveTeleOpCommand;
-import frc.robot.util.NDiMath;
+import frc.util.NDiUnits;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Waypoint;
@@ -29,6 +30,8 @@ public class DriveTrain extends Subsystem {
   public VictorSPX leftMotorFollower = new VictorSPX(RobotMap.leftFrontMotor);
   public VictorSPX rightMotorFollower  = new VictorSPX(RobotMap.rightFrontMotor);
 
+
+  //https://github.com/Mercury1089/2018-robot-code/blob/master/robot/src/org/usfirst/frc/team1089/robot/commands/MoveOnPath.java
   public Trajectory.Config ProfilerConfig = new Trajectory.Config(
     Trajectory.FitMethod.HERMITE_CUBIC, // fit nethod 
     Trajectory.Config.SAMPLES_LOW, // sample count
@@ -119,8 +122,8 @@ public class DriveTrain extends Subsystem {
       leftMotor.set(ControlMode.PercentOutput, leftSpeed);
       rightMotor.set(ControlMode.PercentOutput, rightSpeed);
     } else if (mode == DriveTrainMode.CLOSED) {
-      double targetVelocityRight = (speed - turn) * RobotMap.driveTrainMaxVelocity;
-      double targetVelocityLeft = (speed + turn) * RobotMap.driveTrainMaxVelocity;
+      double targetVelocityRight = (speed - turn) * getMaxVelocity();
+      double targetVelocityLeft = (speed + turn) * getMaxVelocity();
       
       rightMotor.set(ControlMode.Velocity, targetVelocityRight); 
       leftMotor.set(ControlMode.Velocity, targetVelocityLeft);  
@@ -175,14 +178,14 @@ public class DriveTrain extends Subsystem {
       leftSegment = trajectorys[0].get(i);
       rightSegment = trajectorys[1].get(i);
       
-			leftPoint.position = NDiMath.feetToEncoderTicks(leftSegment.position);
-			leftPoint.velocity = NDiMath.revsPerMinuteToTicksPerTenth(leftSegment.velocity);
+			leftPoint.position = NDiUnits.feetToEncoderTicks(leftSegment.position);
+			leftPoint.velocity = NDiUnits.revsPerMinuteToTicksPerTenth(leftSegment.velocity);
 			leftPoint.zeroPos = i == 0; // zero if first point
 			leftPoint.isLastPoint = i + 1 == trajectorys[0].length(); // cheak if last point
       leftPoint.profileSlotSelect0 = RobotMap.PIDLoopIdx;
 
-      rightPoint.position = NDiMath.feetToEncoderTicks(rightSegment.position);
-			rightPoint.velocity = NDiMath.revsPerMinuteToTicksPerTenth(rightSegment.velocity);
+      rightPoint.position = NDiUnits.feetToEncoderTicks(rightSegment.position);
+			rightPoint.velocity = NDiUnits.revsPerMinuteToTicksPerTenth(rightSegment.velocity);
 			rightPoint.zeroPos = i == 0; // zero if first point
 			rightPoint.isLastPoint = i + 1 == trajectorys[0].length(); // cheak if last point
       rightPoint.profileSlotSelect0 = RobotMap.PIDLoopIdx;
@@ -205,5 +208,13 @@ public class DriveTrain extends Subsystem {
   public void stopMotionProfile() {
     rightMotor.set(ControlMode.Velocity, 0);
     leftMotor.set(ControlMode.Velocity, 0);
+  }
+
+  public int getMaxVelocity() {
+    if (Robot.elevator.getPosition() > RobotMap.robotSlowModeThreshold) {
+      return RobotMap.slowModeMaxVelocity;
+    } else {
+      return RobotMap.driveTrainMaxVelocity;
+    }
   }
 }
