@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.ElevatorAutoCommand;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Lock;
 
 public class Robot extends TimedRobot {
   private Command autoCommand;
@@ -15,6 +16,7 @@ public class Robot extends TimedRobot {
 
   public static DriveTrain driveTrain;
   public static Elevator elevator;
+  public static Lock lock;
 
   /**
    * This function is run when the robot is first started up and is
@@ -25,6 +27,7 @@ public class Robot extends TimedRobot {
     // initilize subsystems
     driveTrain = new DriveTrain();
     elevator = new Elevator();
+    lock = new Lock();
 
     // add autonumous modes to chooser
     autoCommandChooser.setDefaultOption("test elevator", new ElevatorAutoCommand());

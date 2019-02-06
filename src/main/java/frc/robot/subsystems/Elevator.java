@@ -58,8 +58,7 @@ public class Elevator extends Subsystem {
   /**
    * Sets tele op command to driveTeleOpCommand
    */
-  @Override
-  public void initDefaultCommand() {
+  @Override public void initDefaultCommand() {
     setDefaultCommand(new ElevatorTeleOpCommand());
   }
 

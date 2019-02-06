@@ -28,6 +28,8 @@ public class RobotMap {
     public static int leftElevatorMotor = 0;
     public static int rightElevatorMotor = 6;
 
+    public static int lock = -1; // BS NUMBER
+
     // PID loop constants
     public static int PIDLoopIdx = 0;
     public static double PIDkF = 0.1989;

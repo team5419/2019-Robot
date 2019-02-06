@@ -36,21 +36,9 @@ public class DriveTrain extends Subsystem {
     Trajectory.FitMethod.HERMITE_CUBIC, // fit nethod 
     Trajectory.Config.SAMPLES_LOW, // sample count
     0.05, // time steps (m/s)
-    NDiUnits.compoundConvsion(
-      NDiUnits.encoderTicksToMeters,
-      NDiUnits.tenthsToSeconds,
-      RobotMap.driveTrainMaxVelocity
-    ), // max velocity (m/s)
-    NDiUnits.compoundConvsion(
-      NDiUnits.encoderTicksToMeters,
-      NDiUnits.tenthsToSeconds * NDiUnits.tenthsToSeconds,
-      RobotMap.driveTrainMaxAcceleration
-    ), // max acceleration (m/s/s)
-    NDiUnits.compoundConvsion(
-      NDiUnits.encoderTicksToMeters,
-      NDiUnits.tenthsToSeconds * NDiUnits.tenthsToSeconds * NDiUnits.tenthsToSeconds,
-      RobotMap.driveTrainMaxAcceleration
-    ) // max jerk (m/s/s/s)
+    RobotMap.driveTrainMaxVelocity, // max velocity (et/100ms)
+    RobotMap.driveTrainMaxAcceleration, // max acceleration (et/100ms/100ms)
+    RobotMap.driveTrainMaxAcceleration // max jerk (et/100ms/100ms/100ms)
   );
 
   private final SendableChooser<DriveTrainMode> modeChooser = new SendableChooser<>();
@@ -145,14 +133,14 @@ public class DriveTrain extends Subsystem {
   public Trajectory[] pathfind(Waypoint[] points) {
     Trajectory trajectory = Pathfinder.generate(points, this.ProfilerConfig);
     TankModifier modifier = new TankModifier(trajectory);
-    modifier.modify(RobotMap.driveTrainWheelDistance);
+    modifier.modify(NDiUnits.inchesToEncoderTicks(RobotMap.driveTrainWheelDistance));
     Trajectory left  = modifier.getLeftTrajectory();
     Trajectory right = modifier.getRightTrajectory();
     return new Trajectory[] {left, right};
   }
 
   /**
-   * Dumps data out onto smart dash board.
+   * Dump data out onto smart dash board.
    */
   public void dump() {
     SmartDashboard.putNumber("current speed right", rightMotor.getSelectedSensorVelocity(RobotMap.PIDLoopIdx));
@@ -190,15 +178,15 @@ public class DriveTrain extends Subsystem {
       leftSegment = trajectorys[0].get(i);
       rightSegment = trajectorys[1].get(i);
       
-			leftPoint.position = NDiUnits.feetToEncoderTicks(leftSegment.position);
-      leftPoint.velocity = leftSegment.velocity; //TODO: conversions
+			leftPoint.position = leftSegment.position;
+      leftPoint.velocity = leftSegment.velocity;
 
 			leftPoint.zeroPos = i == 0; // zero if first point
 			leftPoint.isLastPoint = i + 1 == trajectorys[0].length(); // cheak if last point
       leftPoint.profileSlotSelect0 = RobotMap.PIDLoopIdx;
 
-      rightPoint.position = NDiUnits.metersToEncoderTicks(rightSegment.position);
-			rightPoint.velocity = rightSegment.velocity; //TODO: conversions
+      rightPoint.position = rightSegment.position;
+			rightPoint.velocity = rightSegment.velocity;
 			rightPoint.zeroPos = i == 0; // zero if first point
 			rightPoint.isLastPoint = i + 1 == trajectorys[0].length(); // cheak if last point
       rightPoint.profileSlotSelect0 = RobotMap.PIDLoopIdx;

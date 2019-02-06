@@ -7,41 +7,72 @@ import frc.robot.RobotMap;
  */
 public class NDiUnits {
     /**
-     * ratio of inchs to feet
+     * ratio of inches to feet
      */
-    public static double inchsToFeet = 12;
-    public static double inchsToFeet(double inchs) {
-        return inchs * inchsToFeet;
+    public static double inchesToFeet = 12;
+
+    /**
+     * Convert inches to feet.
+     * @param inches inches to be convert
+     * @return feet
+     */
+    public static double inchesToFeet(double inches) {
+        return inches * inchesToFeet;
+
     }
 
     /**
-     * ratio of inchs to encoder ticks
+     * ratio of inches to encoder ticks
      */
-    public static double inchsToEncoderTicks = 1f / RobotMap.driveTrainWheelCircumference * RobotMap.driveTrainTicksPerRevelution;
-    public static double inchsToEncoderTicks(double inchs) {
-        return inchs * inchsToEncoderTicks;
+    public static double inchesToEncoderTicks = 1f / RobotMap.driveTrainWheelCircumference * RobotMap.driveTrainTicksPerRevelution;
+
+    /**
+     * Convert inches to encoder ticks.
+     * @param inches inches to be convert
+     * @return encoder ticks
+     */
+    public static double inchesToEncoderTicks(double inches) {
+        return inches * inchesToEncoderTicks;
     }
 
     /**
-     * ratio of inchs to meters
+     * ratio of inches to meters
      */
-    public static double inchsToMeters = 0.0254f;
-    public static double inchsToMeters(double inchs) {
-        return inchs * inchsToMeters;
+    public static double inchesToMeters = 0.0254f;
+
+    /**
+     * Convert inches to meters.
+     * @param inches inches to be convert
+     * @return meters
+     */
+    public static double inchesToMeters(double inches) {
+        return inches * inchesToMeters;
     }
 
     /**
-     * ratio of feet to inchs
+     * ratio of feet to inches
      */
-    public static double feetToInchs = 1f / 12f;
-    public static double feetToInchs(double feet) {
-        return feet * feetToInchs;
+    public static double feetToInches = 1f / 12f;
+
+    /**
+     * Convert feet to inches.
+     * @param feet feet to be convert
+     * @return inches
+     */
+    public static double feetToInches(double feet) {
+        return feet * feetToInches;
     }
 
     /**
      * ratio of feet to meters
      */
     public static double feetToMeters = 0.3048f;
+
+    /**
+     * Convert feet to meters.
+     * @param feet feet to be convert
+     * @return meters
+     */
     public static double feetToMeters(double feet) {
         return feet * feetToMeters;
     }
@@ -49,7 +80,13 @@ public class NDiUnits {
     /**
      * ratio of feet to encoder ticks
      */
-    public static double feetToEncoderTicks = inchsToEncoderTicks * inchsToFeet;
+    public static double feetToEncoderTicks = inchesToEncoderTicks * inchesToFeet;
+
+    /**
+     * Convert feet to encoder ticks.
+     * @param feet feet to be convert
+     * @return encoder ticks
+     */
     public static double feetToEncoderTicks(double feet) {
         return feet * feetToEncoderTicks;
     }
@@ -57,17 +94,29 @@ public class NDiUnits {
     /* METERS CONVERSION */
 
     /**
-     * ratio of meters to inchs
+     * ratio of meters to inches
      */
-    public static double metersToInchs = 1f / inchsToMeters;
-    public static double metersToInchs(double feet) {
-        return feet * metersToInchs;
+    public static double metersToInches = 1f / inchesToMeters;
+
+    /**
+     * Convert meters to inches.
+     * @param meters meters to be convert
+     * @return inches
+     */
+    public static double metersToInches(double feet) {
+        return feet * metersToInches;
     }
 
     /**
      * ratio of meters to feet
      */
     public static double metersToFeet = 1f / feetToMeters;
+
+    /**
+     * Convert meters to feet.
+     * @param meters meters to be convert
+     * @return feet
+     */
     public static double metersToFeet(double feet) {
         return feet * metersToFeet;
     }
@@ -75,23 +124,41 @@ public class NDiUnits {
     /**
      * ratio of meters to encoder ticks
      */
-    public static double metersToEncoderTicks = inchsToEncoderTicks * inchsToMeters;
+    public static double metersToEncoderTicks = inchesToEncoderTicks * inchesToMeters;
+
+    /**
+     * Convert meters to encoder ticks.
+     * @param meters meters to be convert
+     * @return encoder ticks
+     */
     public static double metersToEncoderTicks(double feet) {
         return feet * metersToEncoderTicks;
     }
 
     /**
-     * ratio of encoder ticks to inchs
+     * ratio of encoder ticks to inches
      */
-    public static double encoderTicksToInchs = 1f / inchsToEncoderTicks;
-    public static double encoderTicksToInchs(double encoderTicks) {
-        return encoderTicks * encoderTicksToInchs;
+    public static double encoderTicksToInches = 1f / inchesToEncoderTicks;
+
+    /**
+     * Convert encoder ticks to inches.
+     * @param encoderTicks encoder ticks to be convert
+     * @return inches
+     */
+    public static double encoderTicksToInches(double encoderTicks) {
+        return encoderTicks * encoderTicksToInches;
     }
 
     /**
      * ratio of encoder ticks to feet
      */
     public static double encoderTicksToFeet = 1f / feetToEncoderTicks;
+
+    /**
+     * Convert encoder ticks to feet.
+     * @param encoderTicks encoder ticks to be convert
+     * @return feet
+     */
     public static double encoderTicksToFeet(double encoderTicks) {
         return encoderTicks * encoderTicksToFeet;
     }
@@ -100,6 +167,12 @@ public class NDiUnits {
      * ratio of encoder ticks to meters
      */
     public static double encoderTicksToMeters = 1f / metersToEncoderTicks;
+
+    /**
+     * Convert encoder ticks to meters.
+     * @param encoderTicks encoder ticks to be convert
+     * @return meters
+     */
     public static double encoderTicksToMeters(double encoderTicks) {
         return encoderTicks * encoderTicksToMeters;
     }
@@ -108,6 +181,12 @@ public class NDiUnits {
      * ratio of encoder seconds to tenths of a second (100ms)
      */
     public static double secondsToTenths = 10;
+
+    /**
+     * Convert seconds to tenths of a second (100ms).
+     * @param encoderTicks seconds to be convert
+     * @return tenths (100ms)
+     */
     public static double secondsToTenths(double seconds) {
         return seconds * secondsToTenths;
     }
@@ -116,6 +195,12 @@ public class NDiUnits {
      * ratio of tenths of a second (100ms) to seconds
      */
     public static double tenthsToSeconds = 1f / 10f;
+
+    /**
+     * Convert tenths of a second (100ms) to seconds.
+     * @param encoderTicks tenths of a second (100ms) to be convert
+     * @return seconds
+     */
     public static double tenthsToSeconds(double tenths) {
         return tenths * tenthsToSeconds;
     }
