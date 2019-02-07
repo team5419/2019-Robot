@@ -26,9 +26,10 @@ enum DriveTrainMode {
 
 public class DriveTrain extends Subsystem {
   public TalonSRX leftMotor = new TalonSRX(RobotMap.leftBackMotor);
-  public TalonSRX rightMotor = new TalonSRX(RobotMap.rightBackMotor);
   public VictorSPX leftMotorFollower = new VictorSPX(RobotMap.leftFrontMotor);
-  public VictorSPX rightMotorFollower  = new VictorSPX(RobotMap.rightFrontMotor);
+
+  public TalonSRX rightMotor = new TalonSRX(RobotMap.rightFrontMotor);
+  public VictorSPX rightMotorFollower  = new VictorSPX(RobotMap.rightBackMotor);
 
 
   //https://github.com/Mercury1089/2018-robot-code/blob/master/robot/src/org/usfirst/frc/team1089/robot/commands/MoveOnPath.java
@@ -104,7 +105,7 @@ public class DriveTrain extends Subsystem {
    */
   public void teleop() {
     double speed = -OI.driverStick.getRawAxis(1);
-    double turn = OI.driverStick.getRawAxis(4);
+    double turn = OI.driverStick.getRawAxis(0);
     
     setMotors(speed, turn, modeChooser.getSelected());
   }

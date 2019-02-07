@@ -20,15 +20,15 @@ public class RobotMap {
     public static int slowModeMaxVelocity = 100;
 
     // ids of talonSRXs
-    public static int leftBackMotor = -1; // BS NUMBER!
-    public static int rightBackMotor = -1; // BS NUMBER!
-    public static int leftFrontMotor = -1; // BS NUMBER!
-    public static int rightFrontMotor = -1; // BS NUMBER!
+    public static int leftBackMotor = 10;
+    public static int leftFrontMotor = 8;
+    public static int rightBackMotor = 0;
+    public static int rightFrontMotor = 9;
     
-    public static int leftElevatorMotor = 0;
-    public static int rightElevatorMotor = 6;
+    public static int leftElevatorMotor = 5;//11;
+    public static int rightElevatorMotor = 11;//4;
 
-    public static int lock = -1; // BS NUMBER
+    public static int lock = 3; // BS NUMBER
 
     // PID loop constants
     public static int PIDLoopIdx = 0;

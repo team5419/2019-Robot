@@ -3,6 +3,8 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
@@ -18,16 +20,16 @@ public class Elevator extends Subsystem {
   }
 
   public static TalonSRX motor = new TalonSRX(RobotMap.leftElevatorMotor);
-  public static TalonSRX motorFollower = new TalonSRX(RobotMap.rightElevatorMotor);
+  //public static VictorSPX motorFollower = new VictorSPX(RobotMap.rightElevatorMotor);
 
   public Elevator() {
     ConfigMotor(motor);
     motor.setSensorPhase(true);
     motor.setInverted(true);
 
-    motorFollower.set(ControlMode.Follower, RobotMap.leftElevatorMotor);
-    motorFollower.setSensorPhase(false);
-    motorFollower.setInverted(false);
+    //motorFollower.set(ControlMode.Follower, RobotMap.leftElevatorMotor);
+    //motorFollower.setSensorPhase(false);
+    //motorFollower.setInverted(false);
   }
 
   private void ConfigMotor(TalonSRX motor) {
@@ -93,7 +95,7 @@ public class Elevator extends Subsystem {
   }
 
   public void dump() {
-    SmartDashboard.putNumber("current elevator position", motor.getSelectedSensorPosition(RobotMap.PIDLoopIdx));
-    SmartDashboard.putNumber("current elevator velocity", motor.getSelectedSensorVelocity(RobotMap.PIDLoopIdx));
+    //SmartDashboard.putNumber("current elevator position", motor.getSelectedSensorPosition(RobotMap.PIDLoopIdx));
+    //SmartDashboard.putNumber("current elevator velocity", motor.getSelectedSensorVelocity(RobotMap.PIDLoopIdx));
   }
 }

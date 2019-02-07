@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -28,6 +29,8 @@ public class Robot extends TimedRobot {
     driveTrain = new DriveTrain();
     elevator = new Elevator();
     lock = new Lock();
+
+    CameraServer.getInstance().startAutomaticCapture();
 
     // add autonumous modes to chooser
     autoCommandChooser.setDefaultOption("test elevator", new ElevatorAutoCommand());
