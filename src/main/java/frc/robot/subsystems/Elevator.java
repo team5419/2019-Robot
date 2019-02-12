@@ -20,16 +20,16 @@ public class Elevator extends Subsystem {
   }
 
   public static TalonSRX motor = new TalonSRX(RobotMap.leftElevatorMotor);
-  //public static VictorSPX motorFollower = new VictorSPX(RobotMap.rightElevatorMotor);
+  public static VictorSPX motorFollower = new VictorSPX(RobotMap.rightElevatorMotor);
 
   public Elevator() {
     ConfigMotor(motor);
     motor.setSensorPhase(true);
     motor.setInverted(true);
 
-    //motorFollower.set(ControlMode.Follower, RobotMap.leftElevatorMotor);
-    //motorFollower.setSensorPhase(false);
-    //motorFollower.setInverted(false);
+    motorFollower.set(ControlMode.Follower, RobotMap.leftElevatorMotor);
+    motorFollower.setSensorPhase(false);
+    motorFollower.setInverted(false);
   }
 
   private void ConfigMotor(TalonSRX motor) {
@@ -65,23 +65,24 @@ public class Elevator extends Subsystem {
   }
 
   public void teleop() {
-    double percentOutput = -OI.driverStick.getRawAxis(5);
+    double percentOutput = -OI.driverStick.getRawAxis(5) / 2;
     SmartDashboard.putNumber("percentOutput", percentOutput);
     motor.set(ControlMode.PercentOutput, percentOutput);
   }
 
   public void goToPositon(ElevatorPosition position) {
-    if (position == ElevatorPosition.DOWN) {
+    /*if (position == ElevatorPosition.DOWN) {
       System.out.println("DOWN");
       motor.set(ControlMode.MotionMagic, 0);
     } else if (position == ElevatorPosition.UP) {
       System.out.println("UP");
       motor.set(ControlMode.MotionMagic, RobotMap.elevatorMaxPosition);
-    }
+    }*/
   }
 
   public double getPosition() {
-    return motor.getSelectedSensorPosition(RobotMap.PIDLoopIdx);
+    //return motor.getSelectedSensorPosition(RobotMap.PIDLoopIdx);
+    return 0;
   }
 
   public boolean isPositon(ElevatorPosition position) {

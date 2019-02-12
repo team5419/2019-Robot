@@ -12,7 +12,7 @@ public class RobotMap {
     public static double driveTrainWheelDistance = 10; // (inch)
     public static double driveTrainWheelDiameter = 6; // (inch)
     public static double driveTrainWheelCircumference = 2 * Math.PI * driveTrainWheelDiameter; // (inch)
-    public static double driveTrainTicksPerRevelution = -1; //
+    public static double driveTrainTicksPerRevelution =  360; //
 
     // elevator motion configuration
     public static double elevatorMaxPosition = 1000; // (et)
@@ -24,11 +24,16 @@ public class RobotMap {
     public static int leftFrontMotor = 8;
     public static int rightBackMotor = 0;
     public static int rightFrontMotor = 9;
-    
-    public static int leftElevatorMotor = 5;//11;
-    public static int rightElevatorMotor = 11;//4;
 
-    public static int lock = 3; // BS NUMBER
+    public static int leftElevatorMotor = 11;
+    public static int rightElevatorMotor = 4;
+
+    public static int leftLiftMotor = 11; // BS NUMBER
+    public static int rightLiftMotor = 4; // BS NUMBER
+
+    public static int lock = 2;
+
+    public static int clamp = 4; // BS NUMBER
 
     // PID loop constants
     public static int PIDLoopIdx = 0;

@@ -20,11 +20,11 @@ import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Waypoint;
 import jaci.pathfinder.modifiers.TankModifier;
 
-enum DriveTrainMode {
-  OPEN, CLOSED
-}
-
 public class DriveTrain extends Subsystem {
+  public enum DriveTrainMode {
+    OPEN, CLOSED
+  }
+
   public TalonSRX leftMotor = new TalonSRX(RobotMap.leftBackMotor);
   public VictorSPX leftMotorFollower = new VictorSPX(RobotMap.leftFrontMotor);
 
@@ -42,7 +42,7 @@ public class DriveTrain extends Subsystem {
     RobotMap.driveTrainMaxAcceleration // max jerk (et/100ms/100ms/100ms)
   );
 
-  private final SendableChooser<DriveTrainMode> modeChooser = new SendableChooser<>();
+  private final SendableChooser<DriveTrainMode> modeChooser = new SendableChooser<DriveTrainMode>();
 
   public DriveTrain() {
     super();
@@ -52,8 +52,8 @@ public class DriveTrain extends Subsystem {
     setUpTalon(rightMotor);
 
     // invert the right side so they go the right way
-    rightMotor.setInverted(true);
-    rightMotorFollower.setInverted(true);
+    leftMotor.setInverted(true);
+    leftMotorFollower.setInverted(true);
     
     // set talon followers
     rightMotorFollower.set(ControlMode.Follower, RobotMap.rightBackMotor);
@@ -104,10 +104,22 @@ public class DriveTrain extends Subsystem {
    * Runs the teleOp code for the drive train
    */
   public void teleop() {
-    double speed = -OI.driverStick.getRawAxis(1);
-    double turn = OI.driverStick.getRawAxis(0);
+    double speed = OI.driverStick.getRawAxis(1) / 2;
+    double turn = -OI.driverStick.getRawAxis(0) / 4;
     
-    setMotors(speed, turn, modeChooser.getSelected());
+    if (Math.abs(speed) < .01) {
+      speed = 0;
+    }
+
+    if (Math.abs(turn) < .01) {
+      turn = 0;
+    }
+
+    //setMotors(speed, turn, modeChooser.getSelected());
+  }
+
+  public void stop() {
+    this.setMotors(0, 0, DriveTrainMode.OPEN);
   }
 
   /**
@@ -130,6 +142,8 @@ public class DriveTrain extends Subsystem {
       leftMotor.set(ControlMode.Velocity, targetVelocityLeft);  
     }
   }
+
+  
 
   public Trajectory[] pathfind(Waypoint[] points) {
     Trajectory trajectory = Pathfinder.generate(points, this.ProfilerConfig);
@@ -155,7 +169,10 @@ public class DriveTrain extends Subsystem {
    * @param distance the distance the robot should drive.
    */
   public void drive(double distance) {
-    //drive(new double[] {distance});
+    leftMotor.getSensorCollection().setQuadraturePosition(0, RobotMap.TimeoutMs);
+    rightMotor.getSensorCollection().setQuadraturePosition(0, RobotMap.TimeoutMs);
+    leftMotor.set(ControlMode.MotionMagic, distance);
+    rightMotor.set(ControlMode.MotionMagic, distance);
 	}
   
   /**

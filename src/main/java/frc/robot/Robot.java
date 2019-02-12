@@ -6,10 +6,12 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.DriveAutoCommand;
 import frc.robot.commands.ElevatorAutoCommand;
+import frc.robot.subsystems.Clamp;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Elevator;
-import frc.robot.subsystems.Lock;
+import frc.robot.subsystems.Lift;
 
 public class Robot extends TimedRobot {
   private Command autoCommand;
@@ -17,7 +19,8 @@ public class Robot extends TimedRobot {
 
   public static DriveTrain driveTrain;
   public static Elevator elevator;
-  public static Lock lock;
+  public static Lift lift;
+  public static Clamp clamp;
 
   /**
    * This function is run when the robot is first started up and is
@@ -28,13 +31,18 @@ public class Robot extends TimedRobot {
     // initilize subsystems
     driveTrain = new DriveTrain();
     elevator = new Elevator();
-    lock = new Lock();
+    lift = new Lift();
+    clamp = new Clamp();
 
+    // set up camera server
     CameraServer.getInstance().startAutomaticCapture();
 
     // add autonumous modes to chooser
     autoCommandChooser.setDefaultOption("test elevator", new ElevatorAutoCommand());
+    autoCommandChooser.addOption("test drive train", new DriveAutoCommand());
     SmartDashboard.putData("Auto choices", autoCommandChooser);
+
+    new OI();
   }
 
   /**

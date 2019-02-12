@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.util.NDiUnits;
 
 public class DriveAutoCommand extends Command {
   public DriveAutoCommand() {
@@ -10,6 +11,7 @@ public class DriveAutoCommand extends Command {
 
   @Override
   protected void initialize() {
+    Robot.driveTrain.drive(NDiUnits.inchesToEncoderTicks(60));
   }
 
   @Override
