@@ -110,11 +110,11 @@ public class DriveTrain extends Subsystem {
     double turn;
     if(reversed){
       speed = -OI.driverStick.getRawAxis(1);
-      turn = -OI.driverStick.getRawAxis(2);
+      turn = -OI.driverStick.getRawAxis(4);
     }
     else{
       speed = OI.driverStick.getRawAxis(1);
-      turn = -OI.driverStick.getRawAxis(2);
+      turn = -OI.driverStick.getRawAxis(4);
     }
     
     

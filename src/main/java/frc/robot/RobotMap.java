@@ -19,6 +19,10 @@ public class RobotMap {
     public static double robotSlowModeThreshold = 100; // (et)
     public static int slowModeMaxVelocity = 100;
 
+    // Limit Switch Ports
+    public static int openLimitSwitch = 1;
+    public static int closeLimitSwitch = 2;
+
     // ids of talonSRXs
     public static int leftBackMotor = 10;
     public static int leftFrontMotor = 8;

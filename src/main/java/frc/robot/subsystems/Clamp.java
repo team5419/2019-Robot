@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.OI;
 import frc.robot.RobotMap;
@@ -15,12 +16,16 @@ import frc.robot.commands.ClampTeleOpCommand;
 public class Clamp extends Subsystem {
   public static TalonSRX motor = new TalonSRX(RobotMap.clamp);
   public static boolean isGrab = false;
+  public static DigitalInput openLimit, closeLimit;
 
   public Clamp() {
     motor.configNominalOutputForward(0, RobotMap.TimeoutMs);
 		motor.configNominalOutputReverse(0, RobotMap.TimeoutMs);
 		motor.configPeakOutputForward(RobotMap.percent, RobotMap.TimeoutMs);
     motor.configPeakOutputReverse(-RobotMap.percent, RobotMap.TimeoutMs);
+
+    openLimit = new DigitalInput(RobotMap.openLimitSwitch);
+    closeLimit = new DigitalInput(RobotMap.closeLimitSwitch);
     
     ConfigMotor(motor);
   }
@@ -62,14 +67,18 @@ public class Clamp extends Subsystem {
 
   public void grab() {
     //motor.set(ControlMode.Position, 0);
-    motor.set(ControlMode.PercentOutput, .25);
-    isGrab = true;
+    if(closeLimit.get()){
+      motor.set(ControlMode.PercentOutput, .25);
+      isGrab = true;
+    }
   }
 
   public void release() {
     //motor.set(ControlMode.Position, 10);
-    motor.set(ControlMode.PercentOutput, -.25);
-    isGrab = false;
+    if(openLimit.get()){
+      motor.set(ControlMode.PercentOutput, -.25);
+      isGrab = false;
+    }
   }
 
   public void stop() {

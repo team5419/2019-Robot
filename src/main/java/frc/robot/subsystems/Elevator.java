@@ -16,7 +16,7 @@ import frc.robot.commands.ElevatorTeleOpCommand;
  */
 public class Elevator extends Subsystem {
   public enum ElevatorPosition {
-    UP, DOWN
+    UP, DOWN, MID
   }
 
   public static TalonSRX motorFollower = new TalonSRX(RobotMap.leftElevatorMotor);
@@ -36,6 +36,8 @@ public class Elevator extends Subsystem {
 
     motor.setSensorPhase(false);
     motor.setInverted(true);
+
+    // Reset Encoder
     motor.setSelectedSensorPosition(0);
 
     motorFollower.set(ControlMode.Follower, motor.getDeviceID());
@@ -100,7 +102,12 @@ public class Elevator extends Subsystem {
       target = up_pos;
       motor.set(ControlMode.MotionMagic, up_pos);
       SmartDashboard.putNumber("Encoder", motor.getSelectedSensorPosition(RobotMap.PIDLoopIdx));
-
+    } else if(position == ElevatorPosition.MID){
+      System.out.println("MID");
+      int mid_pos = -5000;//-45000;
+      target = mid_pos;
+      motor.set(ControlMode.MotionMagic, mid_pos);
+      SmartDashboard.putNumber("Encoder", motor.getSelectedSensorPosition(RobotMap.PIDLoopIdx));
     }
   }
 
