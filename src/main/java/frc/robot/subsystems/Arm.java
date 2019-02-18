@@ -7,28 +7,34 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.OI;
 import frc.robot.RobotMap;
-import frc.robot.commands.ClampTeleOpCommand;
+import frc.robot.commands.ArmFlipCommand;
 
-/**
- * Add your docs here.
- */
-public class Clamp extends Subsystem {
-  public static TalonSRX motor = new TalonSRX(RobotMap.clamp);
-  public static boolean isGrab = false;
+public class Arm extends Subsystem {
+  TalonSRX motor = new TalonSRX(RobotMap.arm);
 
-  public Clamp() {
+
+  public Arm() {
     motor.configNominalOutputForward(0, RobotMap.TimeoutMs);
 		motor.configNominalOutputReverse(0, RobotMap.TimeoutMs);
 		motor.configPeakOutputForward(RobotMap.percent, RobotMap.TimeoutMs);
     motor.configPeakOutputReverse(-RobotMap.percent, RobotMap.TimeoutMs);
+
+    motor.setInverted(true);
     
     ConfigMotor(motor);
   }
 
   public void teleOp() {
-    // double shift = OI.operatorStick.getRawAxis(0);
-    // //shift = shift / 5;
-    // motor.set(ControlMode.PercentOutput, shift);
+    // if(Clamp.isGrab){
+      if(Math.abs(OI.operatorStick.getRawAxis(1))<0.1){
+        motor.set(ControlMode.PercentOutput, -0.1);
+      }
+      else{
+        double percentOutput = -OI.operatorStick.getRawAxis(1) / 2;
+        motor.set(ControlMode.PercentOutput, percentOutput);
+      }
+      
+    // }
   }
 
   private void ConfigMotor(TalonSRX motor) {
@@ -56,23 +62,21 @@ public class Clamp extends Subsystem {
     motor.configMotionCruiseVelocity(100, RobotMap.TimeoutMs);
   }
 
+
   @Override public void initDefaultCommand() {
-    setDefaultCommand(new ClampTeleOpCommand());
+    setDefaultCommand(new ArmFlipCommand());
   }
 
-  public void grab() {
-    //motor.set(ControlMode.Position, 0);
-    motor.set(ControlMode.PercentOutput, .25);
-    isGrab = true;
-  }
+  // public void flipTowardFront() {
+  //   //motor.set(ControlMode.Position, 0);
+  //   motor.set(ControlMode.PercentOutput, .25);
+  // }
 
-  public void release() {
-    //motor.set(ControlMode.Position, 10);
-    motor.set(ControlMode.PercentOutput, -.25);
-    isGrab = false;
-  }
+  // public void flipTowardBack(){
+  //   motor.set(ControlMode.PercentOutput, .25);
+  // }
 
   public void stop() {
-    motor.set(ControlMode.PercentOutput, 0);
+    motor.set(ControlMode.PercentOutput, 0.2);
   }
 }

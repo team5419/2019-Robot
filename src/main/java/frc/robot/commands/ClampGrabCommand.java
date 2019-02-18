@@ -10,22 +10,37 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class LiftTeleOpCommand extends Command {
-  public LiftTeleOpCommand() {
+public class ClampGrabCommand extends Command {
+  public enum GrabStatus {
+    GRAB,
+    RELEASE
+  }
+
+  GrabStatus status;
+
+  public ClampGrabCommand(GrabStatus status) {
+    this.status = status;
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(Robot.lift);
+    requires(Robot.clamp);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    if (this.status == GrabStatus.GRAB) {
+      Robot.clamp.grab();
+    }
+    if (this.status == GrabStatus.RELEASE) {
+      Robot.clamp.release();
+    }
+
+    System.err.println("started");
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.lift.teleOp();
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -37,7 +52,8 @@ public class LiftTeleOpCommand extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.lift.stop();
+    Robot.clamp.stop();
+    System.err.println("stoped");
   }
 
   // Called when another command which requires one or more of the same

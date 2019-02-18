@@ -19,17 +19,20 @@ public class Elevator extends Subsystem {
     UP, DOWN
   }
 
-  public static TalonSRX motor = new TalonSRX(RobotMap.leftElevatorMotor);
-  public static VictorSPX motorFollower = new VictorSPX(RobotMap.rightElevatorMotor);
+  public static TalonSRX motorFollower = new TalonSRX(RobotMap.leftElevatorMotor);
+  public static TalonSRX motor = new TalonSRX(RobotMap.rightElevatorMotor);
+  // public static TalonSRX motor = new TalonSRX(RobotMap.arm);
 
   public Elevator() {
     ConfigMotor(motor);
-    motor.setSensorPhase(true);
+    motor.setSensorPhase(false);
     motor.setInverted(true);
+    motor.setSelectedSensorPosition(0);
 
-    motorFollower.set(ControlMode.Follower, RobotMap.leftElevatorMotor);
+
+    motorFollower.set(ControlMode.Follower, motor.getDeviceID());
     motorFollower.setSensorPhase(false);
-    motorFollower.setInverted(false);
+    motorFollower.setInverted(true);
   }
 
   private void ConfigMotor(TalonSRX motor) {
@@ -37,12 +40,13 @@ public class Elevator extends Subsystem {
       FeedbackDevice.CTRE_MagEncoder_Relative,
       RobotMap.PIDLoopIdx, RobotMap.TimeoutMs
     );
+
     
     /* set allowed voltage */
     motor.configNominalOutputForward(0, RobotMap.TimeoutMs);
 		motor.configNominalOutputReverse(0, RobotMap.TimeoutMs);
-		motor.configPeakOutputForward(1, RobotMap.TimeoutMs);
-		motor.configPeakOutputReverse(-1, RobotMap.TimeoutMs);
+		motor.configPeakOutputForward(RobotMap.percent, RobotMap.TimeoutMs);
+		motor.configPeakOutputReverse(-RobotMap.percent, RobotMap.TimeoutMs);
     
     /* how wrong motor is allowed to be */
     motor.configAllowableClosedloopError(0, RobotMap.PIDLoopIdx, RobotMap.TimeoutMs);
@@ -53,31 +57,59 @@ public class Elevator extends Subsystem {
 		motor.config_kI(RobotMap.PIDLoopIdx, RobotMap.PIDkI, RobotMap.TimeoutMs);
     motor.config_kD(RobotMap.PIDLoopIdx, RobotMap.PIDkD, RobotMap.TimeoutMs);
 
-    motor.configMotionAcceleration(1000, RobotMap.TimeoutMs);
-    motor.configMotionCruiseVelocity(100, RobotMap.TimeoutMs);
+    motor.configMotionAcceleration(3000, RobotMap.TimeoutMs);
+    motor.configMotionCruiseVelocity(5000, RobotMap.TimeoutMs);
   }
 
   /**
    * Sets tele op command to driveTeleOpCommand
    */
   @Override public void initDefaultCommand() {
-    setDefaultCommand(new ElevatorTeleOpCommand());
+    setDefaultCommand(new ElevatorTeleOpCommand(ElevatorPosition.DOWN));
   }
 
   public void teleop() {
-    double percentOutput = -OI.driverStick.getRawAxis(5) / 2;
-    SmartDashboard.putNumber("percentOutput", percentOutput);
-    motor.set(ControlMode.PercentOutput, percentOutput);
+
+    if(Math.abs(OI.operatorStick.getRawAxis(5))<0.1){
+      motor.set(ControlMode.Velocity, 0);
+      SmartDashboard.putNumber("Encoder", motor.getSelectedSensorPosition(RobotMap.PIDLoopIdx));
+    }
+    else{
+      if(OI.operatorStick.getRawAxis(5)<-0.1){
+        if(motor.getSelectedSensorPosition(RobotMap.PIDLoopIdx)<0){
+          double percentOutput = -OI.operatorStick.getRawAxis(5);
+          SmartDashboard.putNumber("percentOutput", percentOutput);
+          motor.set(ControlMode.PercentOutput, percentOutput);
+          SmartDashboard.putNumber("Encoder", motor.getSelectedSensorPosition(RobotMap.PIDLoopIdx));
+        }
+      }
+      else if(OI.operatorStick.getRawAxis(5)>0.1){
+        if(motor.getSelectedSensorPosition(RobotMap.PIDLoopIdx)>RobotMap.elevatorMaxPosition){
+          double percentOutput = -OI.operatorStick.getRawAxis(5);
+          SmartDashboard.putNumber("percentOutput", percentOutput);
+          motor.set(ControlMode.PercentOutput, percentOutput);
+          SmartDashboard.putNumber("Encoder", motor.getSelectedSensorPosition(RobotMap.PIDLoopIdx));
+        }
+        else{
+          motor.set(ControlMode.Velocity, 0);
+        }
+      }
+
+    }
   }
 
   public void goToPositon(ElevatorPosition position) {
-    /*if (position == ElevatorPosition.DOWN) {
+    if (position == ElevatorPosition.DOWN) {
       System.out.println("DOWN");
-      motor.set(ControlMode.MotionMagic, 0);
+      motor.set(ControlMode.MotionMagic, -500);
+      SmartDashboard.putNumber("Encoder", motor.getSelectedSensorPosition(RobotMap.PIDLoopIdx));
+
     } else if (position == ElevatorPosition.UP) {
       System.out.println("UP");
-      motor.set(ControlMode.MotionMagic, RobotMap.elevatorMaxPosition);
-    }*/
+      motor.set(ControlMode.MotionMagic, -45000);
+      SmartDashboard.putNumber("Encoder", motor.getSelectedSensorPosition(RobotMap.PIDLoopIdx));
+
+    }
   }
 
   public double getPosition() {

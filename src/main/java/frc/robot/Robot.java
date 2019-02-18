@@ -12,6 +12,7 @@ import frc.robot.subsystems.Clamp;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Lift;
+import frc.robot.subsystems.Arm;
 
 public class Robot extends TimedRobot {
   private Command autoCommand;
@@ -21,6 +22,7 @@ public class Robot extends TimedRobot {
   public static Elevator elevator;
   public static Lift lift;
   public static Clamp clamp;
+  public static Arm arm;
 
   /**
    * This function is run when the robot is first started up and is
@@ -33,9 +35,11 @@ public class Robot extends TimedRobot {
     elevator = new Elevator();
     lift = new Lift();
     clamp = new Clamp();
+    arm = new Arm();
 
     // set up camera server
-    CameraServer.getInstance().startAutomaticCapture();
+    CameraServer.getInstance().startAutomaticCapture(0);
+    CameraServer.getInstance().startAutomaticCapture(1);
 
     // add autonumous modes to chooser
     autoCommandChooser.setDefaultOption("test elevator", new ElevatorAutoCommand());

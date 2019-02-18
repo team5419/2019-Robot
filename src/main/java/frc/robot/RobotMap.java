@@ -15,7 +15,7 @@ public class RobotMap {
     public static double driveTrainTicksPerRevelution =  360; //
 
     // elevator motion configuration
-    public static double elevatorMaxPosition = 1000; // (et)
+    public static double elevatorMaxPosition = -47500; // (et)
     public static double robotSlowModeThreshold = 100; // (et)
     public static int slowModeMaxVelocity = 100;
 
@@ -25,23 +25,25 @@ public class RobotMap {
     public static int rightBackMotor = 0;
     public static int rightFrontMotor = 9;
 
-    public static int leftElevatorMotor = 11;
-    public static int rightElevatorMotor = 4;
+    public static int leftElevatorMotor = 5;
+    public static int rightElevatorMotor = 3;
 
-    public static int leftLiftMotor = 11; // BS NUMBER
-    public static int rightLiftMotor = 4; // BS NUMBER
+    public static int leftLiftMotor = 11;
+    public static int rightLiftMotor = 4;
 
-    public static int lock = 2;
+    public static int lock = 7;
 
-    public static int clamp = 4; // BS NUMBER
+    public static int clamp = 2;
+    public static int arm = 6;
 
     // PID loop constants
     public static int PIDLoopIdx = 0;
-    public static double PIDkF = 0.1989;
-    public static double PIDkP = 0.2779895;
+    public static double PIDkF = 0.4;
+    public static double PIDkP = 0.5;
     public static double PIDkI = 0;
     public static double PIDkD = 0;
 
     // misc
     public static int TimeoutMs = 0;
+    public static double percent = 0.75;
 }
