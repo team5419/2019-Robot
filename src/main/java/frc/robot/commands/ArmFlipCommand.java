@@ -9,13 +9,18 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.subsystems.Arm;
 
 public class ArmFlipCommand extends Command {
+  Arm.ArmPosition position;
 
   public ArmFlipCommand() {
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
     requires(Robot.arm);
+  }
+
+  public ArmFlipCommand(Arm.ArmPosition position) {
+    requires(Robot.arm);
+    this.position = position;
   }
 
   // Called just before this Command runs the first time
@@ -27,13 +32,17 @@ public class ArmFlipCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-      Robot.arm.teleOp();
+      if (this.position == null) {
+        Robot.arm.teleOp();
+      } else {
+        Robot.arm.flip(position);
+      }
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return this.position != null;
   }
 
   // Called once after isFinished returns true

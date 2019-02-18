@@ -11,6 +11,10 @@ public class ElevatorTeleOpCommand extends Command {
     this.position = position;
   }
 
+  public ElevatorTeleOpCommand() {
+    requires(Robot.elevator);
+  }
+
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
@@ -19,8 +23,11 @@ public class ElevatorTeleOpCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    // Robot.elevator.teleop();
-    Robot.elevator.goToPositon(position);
+    if (this.position != null) {
+      Robot.elevator.goToPositon(position);
+    } else {
+      Robot.elevator.teleop();
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()

@@ -12,6 +12,14 @@ import frc.robot.commands.ArmFlipCommand;
 public class Arm extends Subsystem {
   TalonSRX motor = new TalonSRX(RobotMap.arm);
 
+  int target = 0;
+  ArmPosition status = ArmPosition.CENTER;
+
+  public enum ArmPosition {
+    FRONT,
+    CENTER,
+    BACK
+  }
 
   public Arm() {
     motor.configNominalOutputForward(0, RobotMap.TimeoutMs);
@@ -25,7 +33,7 @@ public class Arm extends Subsystem {
   }
 
   public void teleOp() {
-    // if(Clamp.isGrab){
+    //if(Clamp.isGrab){
       if(Math.abs(OI.operatorStick.getRawAxis(1))<0.1){
         motor.set(ControlMode.PercentOutput, -0.1);
       }
@@ -33,8 +41,8 @@ public class Arm extends Subsystem {
         double percentOutput = -OI.operatorStick.getRawAxis(1) / 2;
         motor.set(ControlMode.PercentOutput, percentOutput);
       }
-      
-    // }
+      //motor.set(Mode, demand);
+    //}
   }
 
   private void ConfigMotor(TalonSRX motor) {
@@ -42,12 +50,6 @@ public class Arm extends Subsystem {
       FeedbackDevice.CTRE_MagEncoder_Relative,
       RobotMap.PIDLoopIdx, RobotMap.TimeoutMs
     );
-    
-    /* set allowed voltage */
-    motor.configNominalOutputForward(0, RobotMap.TimeoutMs);
-		motor.configNominalOutputReverse(0, RobotMap.TimeoutMs);
-		motor.configPeakOutputForward(1, RobotMap.TimeoutMs);
-		motor.configPeakOutputReverse(-1, RobotMap.TimeoutMs);
     
     /* how wrong motor is allowed to be */
     motor.configAllowableClosedloopError(0, RobotMap.PIDLoopIdx, RobotMap.TimeoutMs);
@@ -62,19 +64,28 @@ public class Arm extends Subsystem {
     motor.configMotionCruiseVelocity(100, RobotMap.TimeoutMs);
   }
 
-
   @Override public void initDefaultCommand() {
     setDefaultCommand(new ArmFlipCommand());
   }
 
-  // public void flipTowardFront() {
-  //   //motor.set(ControlMode.Position, 0);
-  //   motor.set(ControlMode.PercentOutput, .25);
+  //public void flipTowardFront() {
+  //   motor.set(ControlMode.Position, 0);
   // }
 
   // public void flipTowardBack(){
-  //   motor.set(ControlMode.PercentOutput, .25);
+  //   motor.set(ControlMode.Position, 100);
   // }
+
+  public void flip(ArmPosition position) {
+    if (position == ArmPosition.BACK) {
+      target = 0;
+      status = ArmPosition.BACK;
+    } else if (position == ArmPosition.FRONT) {
+      target = 0;
+      status = ArmPosition.BACK;
+    }
+    motor.set(ControlMode.Position, target);
+  }
 
   public void stop() {
     motor.set(ControlMode.PercentOutput, 0.2);

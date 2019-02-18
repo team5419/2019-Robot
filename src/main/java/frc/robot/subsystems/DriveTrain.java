@@ -76,10 +76,10 @@ public class DriveTrain extends Subsystem {
     //todo: most of the values are not well configured, need to research them
 
 		//set peak(max), nominal(min) outputs in %
-		talon.configNominalOutputForward(0, RobotMap.TimeoutMs);
+		/*talon.configNominalOutputForward(0, RobotMap.TimeoutMs);
 		talon.configNominalOutputReverse(0, RobotMap.TimeoutMs);
 	  talon.configPeakOutputForward(RobotMap.percent, RobotMap.TimeoutMs);
-		talon.configPeakOutputReverse(-RobotMap.percent, RobotMap.TimeoutMs);
+		talon.configPeakOutputReverse(-RobotMap.percent, RobotMap.TimeoutMs);*/
 		
 		//talon.selectProfileSlot(RobotMap.SlotIdx, RobotMap.PIDLoopIdx);
 		talon.config_kF(RobotMap.PIDLoopIdx, RobotMap.PIDkF, RobotMap.TimeoutMs);
