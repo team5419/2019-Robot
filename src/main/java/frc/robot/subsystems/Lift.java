@@ -36,8 +36,12 @@ public class Lift extends Subsystem {
     this.locked = false;
   }
 
-  @Override
-  public void initDefaultCommand() {
+  public void stopLock() {
+    lock.set(ControlMode.PercentOutput, .1);
+    this.locked = false;
+  }
+
+  @Override public void initDefaultCommand() {
     this.setDefaultCommand(new LiftTeleOpCommand());
   }
 
@@ -69,6 +73,10 @@ public class Lift extends Subsystem {
 
     motor.configMotionAcceleration(1000, RobotMap.TimeoutMs);
     motor.configMotionCruiseVelocity(100, RobotMap.TimeoutMs);
+  }
+
+  public void lift() {
+    liftMotor.set(ControlMode.PercentOutput, .75);
   }
 
   public void stop() {

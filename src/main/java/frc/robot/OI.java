@@ -8,9 +8,10 @@ import edu.wpi.first.wpilibj.buttons.POVButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.ArmFlipCommand;
 import frc.robot.commands.ClampGrabCommand;
-import frc.robot.commands.LiftFlipCommand;
+import frc.robot.commands.LiftUnlockCommand;
 import frc.robot.commands.DriverFlipDirectionCommand;
 import frc.robot.commands.ElevatorTeleOpCommand;
+import frc.robot.commands.LiftJumpCommand;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
 
@@ -24,10 +25,10 @@ public class OI {
 	public static final Joystick driverStick = new Joystick(0);
 	public static final Joystick operatorStick = new Joystick(1);
 
-	public static final JoystickButton liftButton = new JoystickButton(operatorStick, 14);
+	public static final JoystickButton liftUnlockButton = new JoystickButton(operatorStick, 14);
+	public static final JoystickButton liftJumpButton = new JoystickButton(operatorStick, 4);
 
 	public static final JoystickButton toggleDriverDirection = new JoystickButton(driverStick, 1);
-
 
 	public static final JoystickButton releaseClampButton = new JoystickButton(operatorStick, 3);
 	public static final JoystickButton grabClampButton = new JoystickButton(operatorStick, 2);
@@ -36,14 +37,8 @@ public class OI {
 	public static final POVButton downPosition = new POVButton(operatorStick, 180);
 	public static final POVButton midPosition = new POVButton(operatorStick, 90);
 
-	//public static final JoystickButton upPosition = new JoystickButton(operatorStick, 4);
-	//public static final JoystickButton downPosition = new JoystickButton(operatorStick, 1);
-	//public static final JoystickButton midPosition = new JoystickButton(operatorStick, 13);
-
 	public static final JoystickButton backArm = new JoystickButton(operatorStick, 5);
-	// 180 = bottom arrow
 	public static final POVButton centerArm = new POVButton(operatorStick, 270);
-	//public static final JoystickButton centerArm = new JoystickButton(operatorStick, 2);
 	public static final JoystickButton frontArm = new JoystickButton(operatorStick, 6);
 
 	
@@ -52,7 +47,8 @@ public class OI {
 		gyro.reset();
 		gyro.calibrate(); 
 
-		liftButton.whenPressed(new LiftFlipCommand());
+		liftUnlockButton.whenPressed(new LiftUnlockCommand());
+		liftJumpButton.whileHeld(new LiftJumpCommand());
 
 		upPosition.whenPressed(new ElevatorTeleOpCommand(Elevator.ElevatorPosition.UP));
 		downPosition.whenPressed(new ElevatorTeleOpCommand(Elevator.ElevatorPosition.DOWN));
