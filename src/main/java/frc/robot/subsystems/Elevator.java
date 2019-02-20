@@ -3,7 +3,6 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -66,8 +65,8 @@ public class Elevator extends Subsystem {
 		motor.config_kI(RobotMap.PIDLoopIdx, RobotMap.PIDkI, RobotMap.TimeoutMs);
     motor.config_kD(RobotMap.PIDLoopIdx, RobotMap.PIDkD, RobotMap.TimeoutMs);
 
-    motor.configMotionAcceleration(3000, RobotMap.TimeoutMs);
-    motor.configMotionCruiseVelocity(5000, RobotMap.TimeoutMs);
+    motor.configMotionAcceleration(2000, RobotMap.TimeoutMs);
+    motor.configMotionCruiseVelocity(10000, RobotMap.TimeoutMs);
   }
 
   /**
@@ -82,38 +81,30 @@ public class Elevator extends Subsystem {
     if (target > -500) {
       target = -500;
     }
-    if (target < -45000) {
-      target = -45000;
+    if (target < -49000) {
+      target = -49000;
     }
     motor.set(ControlMode.MotionMagic, target);
-
   }
 
   public void goToPositon(ElevatorPosition position) {
     if (position == ElevatorPosition.DOWN) {
-      System.out.println("DOWN");
+      System.err.println("DOWN");
       target = -500;
       motor.set(ControlMode.MotionMagic, -500);
-      SmartDashboard.putNumber("Encoder", motor.getSelectedSensorPosition(RobotMap.PIDLoopIdx));
-
     } else if (position == ElevatorPosition.UP) {
-      System.out.println("UP");
-      int up_pos = -10000;//-45000;
+      int up_pos = -49000;//-49000;
       target = up_pos;
       motor.set(ControlMode.MotionMagic, up_pos);
-      SmartDashboard.putNumber("Encoder", motor.getSelectedSensorPosition(RobotMap.PIDLoopIdx));
     } else if(position == ElevatorPosition.MID){
-      System.out.println("MID");
-      int mid_pos = -5000;//-45000;
+      int mid_pos = -26000;//-26000;
       target = mid_pos;
       motor.set(ControlMode.MotionMagic, mid_pos);
-      SmartDashboard.putNumber("Encoder", motor.getSelectedSensorPosition(RobotMap.PIDLoopIdx));
     }
   }
 
   public double getPosition() {
-    //return motor.getSelectedSensorPosition(RobotMap.PIDLoopIdx);
-    return 0;
+    return motor.getSelectedSensorPosition(RobotMap.PIDLoopIdx);
   }
 
   public boolean isPositon(ElevatorPosition position) {
@@ -127,7 +118,7 @@ public class Elevator extends Subsystem {
   }
 
   public void dump() {
-    //SmartDashboard.putNumber("current elevator position", motor.getSelectedSensorPosition(RobotMap.PIDLoopIdx));
-    //SmartDashboard.putNumber("current elevator velocity", motor.getSelectedSensorVelocity(RobotMap.PIDLoopIdx));
+    SmartDashboard.putNumber("current elevator position", motor.getSelectedSensorPosition(RobotMap.PIDLoopIdx));
+    SmartDashboard.putNumber("current elevator velocity", motor.getSelectedSensorVelocity(RobotMap.PIDLoopIdx));
   }
 }

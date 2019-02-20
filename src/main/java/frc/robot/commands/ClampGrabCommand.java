@@ -9,6 +9,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.subsystems.Clamp;
 
 public class ClampGrabCommand extends Command {
   public enum GrabStatus {
@@ -20,8 +21,6 @@ public class ClampGrabCommand extends Command {
 
   public ClampGrabCommand(GrabStatus status) {
     this.status = status;
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
     requires(Robot.clamp);
   }
 
@@ -46,6 +45,12 @@ public class ClampGrabCommand extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
+    if(this.status == GrabStatus.GRAB){
+      return !Clamp.closeLimit.get();
+    }
+    else if(this.status == GrabStatus.RELEASE){
+      return !Clamp.openLimit.get();
+    }
     return false;
   }
 

@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.DriveAutoCommand;
+import frc.robot.commands.DriveTurnCommand;
 import frc.robot.commands.ElevatorAutoCommand;
 import frc.robot.subsystems.Clamp;
 import frc.robot.subsystems.DriveTrain;
@@ -44,6 +45,7 @@ public class Robot extends TimedRobot {
     // add autonumous modes to chooser
     autoCommandChooser.setDefaultOption("test elevator", new ElevatorAutoCommand());
     autoCommandChooser.addOption("test drive train", new DriveAutoCommand());
+    autoCommandChooser.addOption("test turning", new DriveTurnCommand(90));
     SmartDashboard.putData("Auto choices", autoCommandChooser);
 
     new OI();
@@ -58,6 +60,9 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     driveTrain.dump();
     elevator.dump();
+    OI.dump();
+    arm.dump();
+    clamp.dump();
   }
 
   /**

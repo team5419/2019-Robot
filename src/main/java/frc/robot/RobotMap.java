@@ -15,13 +15,13 @@ public class RobotMap {
     public static double driveTrainTicksPerRevelution =  360; //
 
     // elevator motion configuration
-    public static double elevatorMaxPosition = -47500; // (et)
+    public static double elevatorMaxPosition = -50000; // (et)
     public static double robotSlowModeThreshold = 100; // (et)
     public static int slowModeMaxVelocity = 100;
 
     // Limit Switch Ports
     public static int openLimitSwitch = 1;
-    public static int closeLimitSwitch = 2;
+    public static int closeLimitSwitch = 0;
 
     // ids of talonSRXs
     public static int leftBackMotor = 10;
@@ -49,5 +49,5 @@ public class RobotMap {
 
     // misc
     public static int TimeoutMs = 0;
-    public static double percent = 0.75;
+    public static double percent = 1;
 }

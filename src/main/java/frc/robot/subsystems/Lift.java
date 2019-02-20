@@ -13,31 +13,26 @@ public class Lift extends Subsystem {
   TalonSRX lock = new TalonSRX(RobotMap.lock);
   TalonSRX liftMotor = new TalonSRX(RobotMap.rightLiftMotor);
   TalonSRX liftMotorFallower = new TalonSRX(RobotMap.leftLiftMotor);
-  public boolean locked = false;
-
+  public boolean locked = true;
 
   public Lift() {
     // set up lock
 
     lock.configNominalOutputForward(0, RobotMap.TimeoutMs);
 		lock.configNominalOutputReverse(0, RobotMap.TimeoutMs);
-		lock.configPeakOutputForward(1, RobotMap.TimeoutMs);
-    lock.configPeakOutputReverse(-1, RobotMap.TimeoutMs);
+		lock.configPeakOutputForward(RobotMap.percent, RobotMap.TimeoutMs);
+    lock.configPeakOutputReverse(-RobotMap.percent, RobotMap.TimeoutMs);
 
-    this.lock();
+    //this.lock();
 
     // set up lift
     
+    ConfigMotor(liftMotor);
     liftMotorFallower.set(ControlMode.Follower, liftMotor.getDeviceID());
   }
 
-  public void lock() {
-    lock.set(ControlMode.PercentOutput, 1);
-    this.locked = true;
-  }
-
   public void unlock() {
-    lock.set(ControlMode.PercentOutput, 0);
+    lock.set(ControlMode.PercentOutput, .1);
     this.locked = false;
   }
 
@@ -47,8 +42,8 @@ public class Lift extends Subsystem {
   }
 
   public void teleOp() {
-      double percentOutput = OI.operatorStick.getRawAxis(3) / 2;
-      liftMotor.set(ControlMode.PercentOutput, percentOutput);
+      // double percentOutput = OI.operatorStick.getRawAxis(3) / 2;
+      // liftMotor.set(ControlMode.PercentOutput, percentOutput);
   }
 
   private void ConfigMotor(TalonSRX motor) {
@@ -60,8 +55,8 @@ public class Lift extends Subsystem {
     /* set allowed voltage */
     motor.configNominalOutputForward(0, RobotMap.TimeoutMs);
 		motor.configNominalOutputReverse(0, RobotMap.TimeoutMs);
-		motor.configPeakOutputForward(1, RobotMap.TimeoutMs);
-		motor.configPeakOutputReverse(-1, RobotMap.TimeoutMs);
+		motor.configPeakOutputForward(RobotMap.percent, RobotMap.TimeoutMs);
+		motor.configPeakOutputReverse(-RobotMap.percent, RobotMap.TimeoutMs);
     
     /* how wrong motor is allowed to be */
     motor.configAllowableClosedloopError(0, RobotMap.PIDLoopIdx, RobotMap.TimeoutMs);

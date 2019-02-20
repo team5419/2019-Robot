@@ -36,11 +36,11 @@ public class Arm extends Subsystem {
   public void teleOp() {
       if(Clamp.isGrab){
         target += OI.operatorStick.getRawAxis(1) * 10;
-        if (target > 0) {
+        if (target < 0) {
           target = 0;
         }
-        if (target < -500) {
-          target = -500;
+        if (target > 1900) {
+          target = 1900;
         }
         motor.set(ControlMode.MotionMagic, target);
       }
@@ -77,7 +77,7 @@ public class Arm extends Subsystem {
     motor.config_kD(RobotMap.PIDLoopIdx, RobotMap.PIDkD, RobotMap.TimeoutMs);
 
     motor.configMotionAcceleration(1000, RobotMap.TimeoutMs);
-    motor.configMotionCruiseVelocity(100, RobotMap.TimeoutMs);
+    motor.configMotionCruiseVelocity(3000, RobotMap.TimeoutMs);
   }
 
   @Override public void initDefaultCommand() {
@@ -85,27 +85,30 @@ public class Arm extends Subsystem {
   }
 
   public void flip(ArmPosition position) {
-    if (position == ArmPosition.BACK) {
-      System.out.println("BACK");
-      target = 0;
-      motor.set(ControlMode.MotionMagic, 0);
-      SmartDashboard.putNumber("Arm Encoder", motor.getSelectedSensorPosition(RobotMap.PIDLoopIdx));
-    } else if (position == ArmPosition.CENTER) {
-      System.out.println("CENTER");
-      int up_pos = -250;
-      target = up_pos;
-      motor.set(ControlMode.MotionMagic, up_pos);
-      SmartDashboard.putNumber("Arm Encoder", motor.getSelectedSensorPosition(RobotMap.PIDLoopIdx));
-    } else if (position == ArmPosition.FRONT){
-      System.out.println("FRONT");
-      int up_pos = -500;
-      target = up_pos;
-      motor.set(ControlMode.MotionMagic, up_pos);
-      SmartDashboard.putNumber("Arm Encoder", motor.getSelectedSensorPosition(RobotMap.PIDLoopIdx));
+    if(Clamp.isGrab){
+      if (position == ArmPosition.BACK) {
+        System.out.println("BACK");
+        target = 0;
+        motor.set(ControlMode.MotionMagic, 0);
+      } else if (position == ArmPosition.CENTER) {
+        System.out.println("CENTER");
+        int up_pos = 950;
+        target = up_pos;
+        motor.set(ControlMode.MotionMagic, up_pos);
+      } else if (position == ArmPosition.FRONT){
+        System.out.println("FRONT");
+        int up_pos = 1900;
+        target = up_pos;
+        motor.set(ControlMode.MotionMagic, up_pos); 
+      }
     }
   }
 
   public void stop() {
     motor.set(ControlMode.PercentOutput, 0);
+  }
+
+  public void dump() {
+    SmartDashboard.putNumber("Arm Encoder", motor.getSelectedSensorPosition(RobotMap.PIDLoopIdx));
   }
 }

@@ -15,22 +15,22 @@ public class DriveTurnCommand extends Command {
 
   // Called just before this Command runs the first time
   @Override protected void initialize() {
-    //OI.gyro.reset();
+    OI.gyro.reset();
+    System.out.println("started turning!");
   }
 
   // Called repeatedly when this Command is scheduled to run
-  @Override
-  protected void execute() {
-    Robot.driveTrain.setMotors(0, 2, DriveTrain.DriveTrainMode.OPEN);
+  @Override protected void execute() {
+    Robot.driveTrain.setMotors(0, .25, DriveTrain.DriveTrainMode.OPEN);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    /*double turned = Math.abs(OI.gyro.getAngle());
+    double turned = Math.abs(OI.gyro.getAngle());
     if (turned > degrees) {
       return true;
-    }*/
+    }
     return false;
   }
 
