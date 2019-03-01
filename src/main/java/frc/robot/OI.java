@@ -41,8 +41,6 @@ public class OI {
 	public static final POVButton centerArm = new POVButton(operatorStick, 270);
 	public static final JoystickButton frontArm = new JoystickButton(operatorStick, 6);
 
-	
-	
 	public OI() {
 		gyro.reset();
 		gyro.calibrate(); 
@@ -67,7 +65,6 @@ public class OI {
 	}
 
 	public static void dump() {
-		//gyro.hashCode()
 		SmartDashboard.putNumber("angle", gyro.getRate());
 	}
 }

@@ -172,7 +172,12 @@ public class DriveTrain extends Subsystem {
     SmartDashboard.putNumber("current speed right", rightMotor.getSelectedSensorVelocity(RobotMap.PIDLoopIdx));
 		SmartDashboard.putNumber("current speed left", leftMotor.getSelectedSensorVelocity(RobotMap.PIDLoopIdx));
 		SmartDashboard.putNumber("current pos right", rightMotor.getSelectedSensorPosition(RobotMap.PIDLoopIdx));
-		SmartDashboard.putNumber("current pos left", leftMotor.getSelectedSensorPosition(RobotMap.PIDLoopIdx));
+    SmartDashboard.putNumber("current pos left", leftMotor.getSelectedSensorPosition(RobotMap.PIDLoopIdx));
+    
+    //SmartDashboard.putNumber("drive train front left current", leftMotorFollower.getOutputCurrent());
+    SmartDashboard.putNumber("drive train back left current", leftMotor.getOutputCurrent());
+    SmartDashboard.putNumber("drive train front right current", rightMotor.getOutputCurrent());
+    //SmartDashboard.putNumber("drive train back right current", motor.getOutputCurrent());
   }
 
   /**

@@ -34,7 +34,7 @@ public class Arm extends Subsystem {
   }
 
   public void teleOp() {
-      if(Clamp.isGrab){
+      if(Clamp.isGrab) {
         target += OI.operatorStick.getRawAxis(1) * 10;
         if (target < 0) {
           target = 0;
@@ -44,18 +44,6 @@ public class Arm extends Subsystem {
         }
         motor.set(ControlMode.MotionMagic, target);
       }
-
-
-    // if(Clamp.isGrab){
-    //   if(Math.abs(OI.operatorStick.getRawAxis(1))<0.1){
-    //     motor.set(ControlMode.PercentOutput, -0.1);
-    //   }
-    //   else{
-    //     double percentOutput = -OI.operatorStick.getRawAxis(1) / 2;
-    //     motor.set(ControlMode.PercentOutput, percentOutput);
-    //   }
-    //   //motor.set(Mode, demand);
-    // }
   }
 
   private void ConfigMotor(TalonSRX motor) {
@@ -110,5 +98,6 @@ public class Arm extends Subsystem {
 
   public void dump() {
     SmartDashboard.putNumber("Arm Encoder", motor.getSelectedSensorPosition(RobotMap.PIDLoopIdx));
+    SmartDashboard.putNumber("arm current", motor.getOutputCurrent());
   }
 }

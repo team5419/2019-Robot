@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
-import frc.robot.commands.ClampTeleOpCommand;
 
 /**
  * Add your docs here.
@@ -84,5 +83,7 @@ public class Clamp extends Subsystem {
   public void dump() {
     SmartDashboard.putBoolean("open limit", openLimit.get());
     SmartDashboard.putBoolean("close limit", closeLimit.get());
+
+    SmartDashboard.putNumber("motor current", motor.getOutputCurrent());
   }
 }

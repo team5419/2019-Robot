@@ -63,6 +63,7 @@ public class Robot extends TimedRobot {
     OI.dump();
     arm.dump();
     clamp.dump();
+    lift.dump();
   }
 
   /**

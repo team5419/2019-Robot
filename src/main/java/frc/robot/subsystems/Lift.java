@@ -5,14 +5,14 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.OI;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.commands.LiftTeleOpCommand;
 
 public class Lift extends Subsystem {
   TalonSRX lock = new TalonSRX(RobotMap.lock);
   TalonSRX liftMotor = new TalonSRX(RobotMap.rightLiftMotor);
-  TalonSRX liftMotorFallower = new TalonSRX(RobotMap.leftLiftMotor);
+  TalonSRX liftMotorFollower = new TalonSRX(RobotMap.leftLiftMotor);
   public boolean locked = true;
 
   public Lift() {
@@ -28,12 +28,12 @@ public class Lift extends Subsystem {
     // set up lift
     
     ConfigMotor(liftMotor);
-    liftMotorFallower.set(ControlMode.Follower, liftMotor.getDeviceID());
+    liftMotorFollower.set(ControlMode.Follower, liftMotor.getDeviceID());
   }
 
   public void unlock() {
     lock.set(ControlMode.PercentOutput, .1);
-    this.locked = false;
+    this.locked = true;
   }
 
   public void stopLock() {
@@ -76,10 +76,18 @@ public class Lift extends Subsystem {
   }
 
   public void lift() {
-    liftMotor.set(ControlMode.PercentOutput, .75);
+    if (!locked) {
+      liftMotor.set(ControlMode.PercentOutput, .75);
+    }
   }
 
   public void stop() {
     liftMotor.set(ControlMode.PercentOutput, 0);
+  }
+
+  public void dump() {
+    SmartDashboard.putNumber("lock current", lock.getOutputCurrent());
+    SmartDashboard.putNumber("lift motor current", liftMotor.getOutputCurrent());
+    SmartDashboard.putNumber("lift motor helper current", liftMotorFollower.getOutputCurrent());
   }
 }

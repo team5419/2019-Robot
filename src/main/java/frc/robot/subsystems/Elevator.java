@@ -120,5 +120,7 @@ public class Elevator extends Subsystem {
   public void dump() {
     SmartDashboard.putNumber("current elevator position", motor.getSelectedSensorPosition(RobotMap.PIDLoopIdx));
     SmartDashboard.putNumber("current elevator velocity", motor.getSelectedSensorVelocity(RobotMap.PIDLoopIdx));
+    SmartDashboard.putNumber("elevator current", motor.getOutputCurrent());
+    SmartDashboard.putNumber("elevator helper current", motorFollower.getOutputCurrent());
   }
 }
