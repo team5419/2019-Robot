@@ -12,8 +12,6 @@ import frc.robot.Robot;
 
 public class LiftTeleOpCommand extends Command {
   public LiftTeleOpCommand() {
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
     requires(Robot.lift);
   }
 
@@ -31,7 +29,7 @@ public class LiftTeleOpCommand extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return Robot.lift.locked;
   }
 
   // Called once after isFinished returns true

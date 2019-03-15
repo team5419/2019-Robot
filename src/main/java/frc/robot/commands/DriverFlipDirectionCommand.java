@@ -13,11 +13,11 @@ public class DriverFlipDirectionCommand extends Command {
   @Override
   protected void initialize() {
     Robot.driveTrain.reversed = !Robot.driveTrain.reversed;
-    if (Robot.driveTrain.reversed) {
+    /*if (Robot.driveTrain.reversed) {
       CameraServer.getInstance().getServer().setSource(Robot.frontCamera);
     } else {
       CameraServer.getInstance().getServer().setSource(Robot.backCamera);
-    }
+    }*/
   }
 
   // Called repeatedly when this Command is scheduled to run

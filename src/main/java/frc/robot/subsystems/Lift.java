@@ -87,7 +87,8 @@ public class Lift extends Subsystem {
 
   public void dump() {
     SmartDashboard.putNumber("lock current", lock.getOutputCurrent());
+    SmartDashboard.putBoolean("lift is locked", locked);
     SmartDashboard.putNumber("lift motor current", liftMotor.getOutputCurrent());
-    SmartDashboard.putNumber("lift motor helper current", liftMotorFollower.getOutputCurrent());
+    //SmartDashboard.putNumber("lift motor helper current", liftMotorFollower.getOutputCurrent());
   }
 }

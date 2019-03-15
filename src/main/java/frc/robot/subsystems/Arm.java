@@ -35,7 +35,11 @@ public class Arm extends Subsystem {
 
   public void teleOp() {
       if(Clamp.isGrab) {
-        target += OI.operatorStick.getRawAxis(1) * 10;
+        double d = OI.operatorStick.getRawAxis(1);
+        if (Math.abs(d) < .25) {
+          d = 0;
+        }
+        target += d * 10;
         if (target < 0) {
           target = 0;
         }
@@ -98,6 +102,6 @@ public class Arm extends Subsystem {
 
   public void dump() {
     SmartDashboard.putNumber("Arm Encoder", motor.getSelectedSensorPosition(RobotMap.PIDLoopIdx));
-    SmartDashboard.putNumber("arm current", motor.getOutputCurrent());
+    SmartDashboard.putNumber("Arm current", motor.getOutputCurrent());
   }
 }

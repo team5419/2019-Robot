@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.buttons.POVButton;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.ArmFlipCommand;
 import frc.robot.commands.ClampGrabCommand;
 import frc.robot.commands.LiftUnlockCommand;
@@ -66,6 +65,6 @@ public class OI {
 	}
 
 	public static void dump() {
-		SmartDashboard.putNumber("angle", gyro.getRate());
+		//SmartDashboard.putNumber("angle", gyro.getRate());
 	}
 }

@@ -43,9 +43,9 @@ public static UsbCamera frontCamera;
     arm = new Arm();
 
     // set up camera server
-    frontCamera = CameraServer.getInstance().startAutomaticCapture(1);
+    frontCamera = CameraServer.getInstance().startAutomaticCapture(0);
     backCamera = CameraServer.getInstance().startAutomaticCapture(1);
-    CameraServer.getInstance().getServer().setSource(frontCamera);
+    //CameraServer.getInstance().getServer().setSource(frontCamera);
 
     // add autonumous modes to chooser
     autoCommandChooser.setDefaultOption("test elevator", new ElevatorAutoCommand());
@@ -77,10 +77,10 @@ public static UsbCamera frontCamera;
    */
   @Override
   public void autonomousInit() {
-    autoCommand = autoCommandChooser.getSelected();
+    /*autoCommand = autoCommandChooser.getSelected();
     System.out.print("Running: ");
     System.out.println(autoCommand);
-    autoCommand.start();
+    autoCommand.start();*/
   }
 
   /**

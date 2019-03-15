@@ -7,7 +7,9 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.OI;
 import frc.robot.RobotMap;
+import frc.robot.commands.ClampTeleOpCommand;
 
 /**
  * Add your docs here.
@@ -30,9 +32,11 @@ public class Clamp extends Subsystem {
   }
 
   public void teleOp() {
-    // double shift = OI.operatorStick.getRawAxis(0);
-    // //shift = shift / 5;
-    // motor.set(ControlMode.PercentOutput, shift);
+    double shift = OI.operatorStick.getRawAxis(0);
+    if (Math.abs(shift) < .2) {
+      shift = shift / 5;
+      motor.set(ControlMode.PercentOutput, shift);
+    }
   }
 
   private void ConfigMotor(TalonSRX motor) {
@@ -61,7 +65,7 @@ public class Clamp extends Subsystem {
   }
 
   @Override public void initDefaultCommand() {
-    //setDefaultCommand(new ClampTeleOpCommand());
+    setDefaultCommand(new ClampTeleOpCommand());
   }
 
   public void grab() {
@@ -84,6 +88,6 @@ public class Clamp extends Subsystem {
     SmartDashboard.putBoolean("open limit", openLimit.get());
     SmartDashboard.putBoolean("close limit", closeLimit.get());
 
-    SmartDashboard.putNumber("motor current", motor.getOutputCurrent());
+    SmartDashboard.putNumber("clamp current", motor.getOutputCurrent());
   }
 }
