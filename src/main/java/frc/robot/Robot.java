@@ -1,12 +1,13 @@
 package frc.robot;
 
+import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.DriveAutoCommand;
+import frc.robot.commands.DriveAutoCommand; 
 import frc.robot.commands.DriveTurnCommand;
 import frc.robot.commands.ElevatorAutoCommand;
 import frc.robot.subsystems.Clamp;
@@ -25,6 +26,9 @@ public class Robot extends TimedRobot {
   public static Clamp clamp;
   public static Arm arm;
 
+public static UsbCamera frontCamera;
+  public static UsbCamera backCamera;
+
   /**
    * This function is run when the robot is first started up and is
    * used for initialization code.
@@ -39,8 +43,9 @@ public class Robot extends TimedRobot {
     arm = new Arm();
 
     // set up camera server
-    CameraServer.getInstance().startAutomaticCapture(0);
-    CameraServer.getInstance().startAutomaticCapture(1);
+    frontCamera = CameraServer.getInstance().startAutomaticCapture(1);
+    backCamera = CameraServer.getInstance().startAutomaticCapture(1);
+    CameraServer.getInstance().getServer().setSource(frontCamera);
 
     // add autonumous modes to chooser
     autoCommandChooser.setDefaultOption("test elevator", new ElevatorAutoCommand());
@@ -80,7 +85,6 @@ public class Robot extends TimedRobot {
 
   /**
    * This function is called periodically during autonomous.
-   * Tells driveTrain to update the motion profile buffers
    */
   @Override
   public void autonomousPeriodic() {
@@ -89,7 +93,6 @@ public class Robot extends TimedRobot {
 
   /**
    * Called at the start of teleop mode.
-   * It get the selected auto command from autoCommandChooser and runs it
    */
   @Override
   public void teleopInit() {

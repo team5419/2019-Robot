@@ -25,6 +25,7 @@ public class OI {
 	public static final Joystick driverStick = new Joystick(0);
 	public static final Joystick operatorStick = new Joystick(1);
 
+
 	public static final JoystickButton liftUnlockButton = new JoystickButton(operatorStick, 14);
 	public static final JoystickButton liftJumpButton = new JoystickButton(operatorStick, 4);
 
