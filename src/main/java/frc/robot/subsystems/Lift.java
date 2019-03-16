@@ -33,11 +33,12 @@ public class Lift extends Subsystem {
 
   public void unlock() {
     lock.set(ControlMode.PercentOutput, .1);
+    System.out.println("unlocked!");
     this.locked = true;
   }
 
   public void stopLock() {
-    lock.set(ControlMode.PercentOutput, .1);
+    lock.set(ControlMode.PercentOutput, 0);
     this.locked = false;
   }
 
@@ -77,7 +78,7 @@ public class Lift extends Subsystem {
 
   public void lift() {
     if (!locked) {
-      liftMotor.set(ControlMode.PercentOutput, .75);
+      liftMotor.set(ControlMode.PercentOutput, -1);
     }
   }
 
