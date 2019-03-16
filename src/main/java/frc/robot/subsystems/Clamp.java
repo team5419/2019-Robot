@@ -32,11 +32,11 @@ public class Clamp extends Subsystem {
   }
 
   public void teleOp() {
-    double shift = OI.operatorStick.getRawAxis(0);
+    /*double shift = OI.operatorStick.getRawAxis(0);
     if (Math.abs(shift) < .2) {
       shift = shift / 5;
       motor.set(ControlMode.PercentOutput, shift);
-    }
+    }*/
   }
 
   private void ConfigMotor(TalonSRX motor) {
@@ -65,12 +65,12 @@ public class Clamp extends Subsystem {
   }
 
   @Override public void initDefaultCommand() {
-    setDefaultCommand(new ClampTeleOpCommand());
+    //setDefaultCommand(new ClampTeleOpCommand());
   }
 
   public void grab() {
     //motor.set(ControlMode.Position, 0);
-    motor.set(ControlMode.PercentOutput, .25);
+    motor.set(ControlMode.PercentOutput, .3);
     isGrab = true;
   }
 

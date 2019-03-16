@@ -2,21 +2,17 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.RobotMap;
 
-public class DriverFlipDirectionCommand extends Command {
-  public DriverFlipDirectionCommand() {
-    requires(Robot.driveTrain);
+public class ArmZeroCommand extends Command {
+  public ArmZeroCommand() {
+    requires(Robot.arm);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.driveTrain.reversed = !Robot.driveTrain.reversed;
-    /*if (Robot.driveTrain.reversed) {
-      CameraServer.getInstance().getServer().setSource(Robot.frontCamera);
-    } else {
-      CameraServer.getInstance().getServer().setSource(Robot.backCamera);
-    }*/
+      Robot.arm.motor.getSensorCollection().setAnalogPosition(0, RobotMap.TimeoutMs);
   }
 
   // Called repeatedly when this Command is scheduled to run

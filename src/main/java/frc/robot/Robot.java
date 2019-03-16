@@ -77,6 +77,7 @@ public static UsbCamera frontCamera;
    */
   @Override
   public void autonomousInit() {
+    driveTrain.reversed = true;
     /*autoCommand = autoCommandChooser.getSelected();
     System.out.print("Running: ");
     System.out.println(autoCommand);

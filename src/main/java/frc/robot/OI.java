@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.buttons.POVButton;
 import frc.robot.commands.ArmFlipCommand;
+import frc.robot.commands.ArmZeroCommand;
 import frc.robot.commands.ClampGrabCommand;
 import frc.robot.commands.LiftUnlockCommand;
 import frc.robot.commands.DriverFlipDirectionCommand;
@@ -33,6 +34,8 @@ public class OI {
 	public static final JoystickButton releaseClampButton = new JoystickButton(operatorStick, 3);
 	public static final JoystickButton grabClampButton = new JoystickButton(operatorStick, 2);
 
+	public static final JoystickButton zeroArmButton = new JoystickButton(operatorStick, 15);
+
 	public static final POVButton upPosition = new POVButton(operatorStick, 0);
 	public static final POVButton downPosition = new POVButton(operatorStick, 180);
 	public static final POVButton midPosition = new POVButton(operatorStick, 90);
@@ -55,6 +58,8 @@ public class OI {
 		backArm.whenPressed(new ArmFlipCommand(Arm.ArmPosition.BACK));
 		centerArm.whenPressed(new ArmFlipCommand(Arm.ArmPosition.CENTER));
 		frontArm.whenPressed(new ArmFlipCommand(Arm.ArmPosition.FRONT));
+		zeroArmButton.whenPressed(new ArmZeroCommand());
+
 
 		toggleDriverDirection.whenPressed(new DriverFlipDirectionCommand());
 

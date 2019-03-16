@@ -11,7 +11,7 @@ import frc.robot.RobotMap;
 import frc.robot.commands.ArmFlipCommand;
 
 public class Arm extends Subsystem {
-  TalonSRX motor = new TalonSRX(RobotMap.arm);
+  public static final TalonSRX motor = new TalonSRX(RobotMap.arm);
 
   int target = 0;
   ArmPosition status = ArmPosition.BACK;
@@ -34,20 +34,18 @@ public class Arm extends Subsystem {
   }
 
   public void teleOp() {
-      if(Clamp.isGrab) {
-        double d = OI.operatorStick.getRawAxis(1);
-        if (Math.abs(d) < .25) {
-          d = 0;
-        }
-        target += d * 10;
-        if (target < 0) {
-          target = 0;
-        }
-        if (target > 1900) {
-          target = 1900;
-        }
-        motor.set(ControlMode.MotionMagic, target);
-      }
+    double d = OI.operatorStick.getRawAxis(1);
+    if (Math.abs(d) < .25) {
+      d = 0;
+    }
+    target += d;
+    if (target < 0) {
+      target = 0;
+    }
+    if (target > 1900) {
+      target = 1900;
+    }
+    motor.set(ControlMode.MotionMagic, target);
   }
 
   private void ConfigMotor(TalonSRX motor) {
@@ -89,7 +87,7 @@ public class Arm extends Subsystem {
         motor.set(ControlMode.MotionMagic, up_pos);
       } else if (position == ArmPosition.FRONT){
         System.out.println("FRONT");
-        int up_pos = 1900;
+        int up_pos = 2100;
         target = up_pos;
         motor.set(ControlMode.MotionMagic, up_pos); 
       }
