@@ -6,6 +6,7 @@ import frc.robot.subsystems.Elevator;
 
 public class ElevatorTeleOpCommand extends Command {
   Elevator.ElevatorPosition position;
+  
   public ElevatorTeleOpCommand(Elevator.ElevatorPosition position) {
     requires(Robot.elevator);
     this.position = position;

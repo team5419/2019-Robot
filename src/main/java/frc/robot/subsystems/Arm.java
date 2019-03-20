@@ -42,8 +42,8 @@ public class Arm extends Subsystem {
     if (target < 0) {
       target = 0;
     }
-    if (target > 1900) {
-      target = 1900;
+    if (target > 1950) {
+      target = 1950;
     }
     motor.set(ControlMode.MotionMagic, target);
   }
@@ -62,7 +62,7 @@ public class Arm extends Subsystem {
 
     /* set variables for PID loops */
     motor.config_kF(RobotMap.PIDLoopIdx, RobotMap.PIDkF, RobotMap.TimeoutMs);
-		motor.config_kP(RobotMap.PIDLoopIdx, RobotMap.PIDkP, RobotMap.TimeoutMs);
+		motor.config_kP(RobotMap.PIDLoopIdx, .75, RobotMap.TimeoutMs);
 		motor.config_kI(RobotMap.PIDLoopIdx, RobotMap.PIDkI, RobotMap.TimeoutMs);
     motor.config_kD(RobotMap.PIDLoopIdx, RobotMap.PIDkD, RobotMap.TimeoutMs);
 
@@ -87,7 +87,7 @@ public class Arm extends Subsystem {
         motor.set(ControlMode.MotionMagic, up_pos);
       } else if (position == ArmPosition.FRONT){
         System.out.println("FRONT");
-        int up_pos = 2100;
+        int up_pos = 1950;
         target = up_pos;
         motor.set(ControlMode.MotionMagic, up_pos); 
       }

@@ -77,11 +77,11 @@ public class Elevator extends Subsystem {
   }
 
   public void teleop() {
-    target += OI.operatorStick.getRawAxis(5) * 100;
-    if (Math.abs(target) < .2 * 100) {
-      target = 0;
+    double pos = OI.operatorStick.getRawAxis(5);
+    if (Math.abs(pos) < .1) {
+      pos = 0;
     }
-
+    target += pos * 100;
     if (target > -500) {
       target = -500;
     }

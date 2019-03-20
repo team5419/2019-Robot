@@ -22,7 +22,11 @@ public class LiftUnlockCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.lift.unlock();
+    if (t.get() > .1) {
+      Robot.lift.unlock(1);
+    } else {
+      Robot.lift.unlock(-1);
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()

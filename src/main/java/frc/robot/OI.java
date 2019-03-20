@@ -34,7 +34,7 @@ public class OI {
 	public static final JoystickButton releaseClampButton = new JoystickButton(operatorStick, 3);
 	public static final JoystickButton grabClampButton = new JoystickButton(operatorStick, 2);
 
-	//public static final JoystickButton zeroArmButton = new JoystickButton(operatorStick, 14);
+	public static final JoystickButton zeroArmButton = new JoystickButton(operatorStick, 13);
 
 	public static final POVButton upPosition = new POVButton(operatorStick, 0);
 	public static final POVButton downPosition = new POVButton(operatorStick, 180);

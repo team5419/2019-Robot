@@ -31,8 +31,8 @@ public class Lift extends Subsystem {
     liftMotorFollower.set(ControlMode.Follower, liftMotor.getDeviceID());
   }
 
-  public void unlock() {
-    lock.set(ControlMode.PercentOutput, .1);
+  public void unlock(int i) {
+    lock.set(ControlMode.PercentOutput, .4 * i);
     System.out.println("unlocked!");
     this.locked = true;
   }
@@ -90,6 +90,5 @@ public class Lift extends Subsystem {
     SmartDashboard.putNumber("lock current", lock.getOutputCurrent());
     SmartDashboard.putBoolean("lift is locked", locked);
     SmartDashboard.putNumber("lift motor current", liftMotor.getOutputCurrent());
-    //SmartDashboard.putNumber("lift motor helper current", liftMotorFollower.getOutputCurrent());
   }
 }
