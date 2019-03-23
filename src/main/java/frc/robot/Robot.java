@@ -26,7 +26,7 @@ public class Robot extends TimedRobot {
   public static Clamp clamp;
   public static Arm arm;
 
-public static UsbCamera frontCamera;
+  public static UsbCamera frontCamera;
   public static UsbCamera backCamera;
 
   /**
@@ -45,7 +45,7 @@ public static UsbCamera frontCamera;
     // set up camera server
     frontCamera = CameraServer.getInstance().startAutomaticCapture(0);
     backCamera = CameraServer.getInstance().startAutomaticCapture(1);
-    //CameraServer.getInstance().getServer().setSource(frontCamera);
+    CameraServer.getInstance().startAutomaticCapture(2);
 
     // add autonumous modes to chooser
     autoCommandChooser.setDefaultOption("test elevator", new ElevatorAutoCommand());

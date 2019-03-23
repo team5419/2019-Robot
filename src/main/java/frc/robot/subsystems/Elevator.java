@@ -7,6 +7,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.commands.ElevatorTeleOpCommand;
 
@@ -22,9 +23,12 @@ public class Elevator extends Subsystem {
   public static TalonSRX motor = new TalonSRX(RobotMap.rightElevatorMotor);
   // public static TalonSRX motor = new TalonSRX(RobotMap.arm);
 
-  private int target = -500;
+  public int target = -500;
 
   public Elevator() {
+    motorFollower.follow(motor);
+    motorFollower.setInverted(true);
+
     ConfigMotor(motor);
 
     /* set allowed voltage */
@@ -38,9 +42,6 @@ public class Elevator extends Subsystem {
 
     // Reset Encoder
     motor.setSelectedSensorPosition(0);
-
-    motorFollower.set(ControlMode.Follower, motor.getDeviceID());
-    motorFollower.setInverted(true);
   }
 
   private void ConfigMotor(TalonSRX motor) {
@@ -61,12 +62,12 @@ public class Elevator extends Subsystem {
 
     /* set variables for PID loops */
     motor.config_kF(RobotMap.PIDLoopIdx, RobotMap.PIDkF, RobotMap.TimeoutMs);
-		motor.config_kP(RobotMap.PIDLoopIdx, RobotMap.PIDkP, RobotMap.TimeoutMs);
-		motor.config_kI(RobotMap.PIDLoopIdx, RobotMap.PIDkI, RobotMap.TimeoutMs);
-    motor.config_kD(RobotMap.PIDLoopIdx, RobotMap.PIDkD, RobotMap.TimeoutMs);
+		motor.config_kP(RobotMap.PIDLoopIdx, .75, RobotMap.TimeoutMs);
+	  motor.config_kI(RobotMap.PIDLoopIdx, 0, RobotMap.TimeoutMs);
+    motor.config_kD(RobotMap.PIDLoopIdx, 3, RobotMap.TimeoutMs);
 
-    motor.configMotionAcceleration(2000, RobotMap.TimeoutMs);
-    motor.configMotionCruiseVelocity(10000, RobotMap.TimeoutMs);
+    motor.configMotionAcceleration(4000, RobotMap.TimeoutMs);
+    motor.configMotionCruiseVelocity(15000, RobotMap.TimeoutMs);
   }
 
   /**
@@ -77,7 +78,7 @@ public class Elevator extends Subsystem {
   }
 
   public void teleop() {
-    double pos = OI.operatorStick.getRawAxis(5);
+    double pos = OI.operatorStick.getRawAxis(1); // 5
     if (Math.abs(pos) < .1) {
       pos = 0;
     }
@@ -87,6 +88,10 @@ public class Elevator extends Subsystem {
     }
     if (target < -49000) {
       target = -49000;
+    }
+
+    if (Robot.arm.target == 0 && Arm.motor.getSelectedSensorPosition() < 10) {
+
     }
     motor.set(ControlMode.MotionMagic, target);
   }

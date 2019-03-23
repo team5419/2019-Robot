@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -12,7 +13,7 @@ import frc.robot.commands.LiftTeleOpCommand;
 public class Lift extends Subsystem {
   TalonSRX lock = new TalonSRX(RobotMap.lock);
   TalonSRX liftMotor = new TalonSRX(RobotMap.rightLiftMotor);
-  TalonSRX liftMotorFollower = new TalonSRX(RobotMap.leftLiftMotor);
+  VictorSPX liftMotorFollower = new VictorSPX(RobotMap.leftLiftMotor);
   public boolean locked = true;
 
   public Lift() {
@@ -27,8 +28,8 @@ public class Lift extends Subsystem {
 
     // set up lift
     
+    liftMotorFollower.follow(liftMotor);
     ConfigMotor(liftMotor);
-    liftMotorFollower.set(ControlMode.Follower, liftMotor.getDeviceID());
   }
 
   public void unlock(int i) {
@@ -79,6 +80,12 @@ public class Lift extends Subsystem {
   public void lift() {
     if (!locked) {
       liftMotor.set(ControlMode.PercentOutput, -1);
+    }
+  }
+
+  public void softLift() {
+    if (!locked) {
+      liftMotor.set(ControlMode.PercentOutput, -.1);
     }
   }
 

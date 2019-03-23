@@ -23,7 +23,8 @@ public class ArmZeroCommand extends Command {
 
   // Make this return true when this Command no longer needs to run execute()
   @Override protected boolean isFinished() {
-    return Arm.motor.getSensorCollection().isFwdLimitSwitchClosed();
+    return true;
+    //return Arm.motor.getSensorCollection().isFwdLimitSwitchClosed();
   }
 
   // Called once after isFinished returns true

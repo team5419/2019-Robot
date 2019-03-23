@@ -4,10 +4,10 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
+import frc.robot.commands.ClampTeleOpCommand;
 
 /**
  * Add your docs here.
@@ -15,26 +15,25 @@ import frc.robot.RobotMap;
 public class Clamp extends Subsystem {
   public static TalonSRX motor = new TalonSRX(RobotMap.clamp);
   public static boolean isGrab = false;
-  public static DigitalInput openLimit, closeLimit;
+  //public static DigitalInput openLimit, closeLimit;
 
   public Clamp() {
+    motor.setInverted(true);
+
     motor.configNominalOutputForward(0, RobotMap.TimeoutMs);
 		motor.configNominalOutputReverse(0, RobotMap.TimeoutMs);
 		motor.configPeakOutputForward(RobotMap.percent, RobotMap.TimeoutMs);
     motor.configPeakOutputReverse(-RobotMap.percent, RobotMap.TimeoutMs);
 
-    openLimit = new DigitalInput(RobotMap.openLimitSwitch);
-    closeLimit = new DigitalInput(RobotMap.closeLimitSwitch);
-    
     ConfigMotor(motor);
   }
 
   public void teleOp() {
-    /*double shift = OI.operatorStick.getRawAxis(0);
-    if (Math.abs(shift) < .2) {
-      shift = shift / 5;
-      motor.set(ControlMode.PercentOutput, shift);
-    }*/
+    if (motor.getSensorCollection().isRevLimitSwitchClosed()) {
+      isGrab = true;
+    }
+
+    
   }
 
   private void ConfigMotor(TalonSRX motor) {
@@ -63,18 +62,16 @@ public class Clamp extends Subsystem {
   }
 
   @Override public void initDefaultCommand() {
-    //setDefaultCommand(new ClampTeleOpCommand());
+    setDefaultCommand(new ClampTeleOpCommand());
   }
 
   public void grab() {
-    //motor.set(ControlMode.Position, 0);
-    motor.set(ControlMode.PercentOutput, .3);
+    motor.set(ControlMode.PercentOutput, -.35);
     isGrab = true;
   }
 
   public void release() {
-    //motor.set(ControlMode.Position, 10);
-    motor.set(ControlMode.PercentOutput, -.25);
+    motor.set(ControlMode.PercentOutput, .25);
     isGrab = false;
   }
 
@@ -83,8 +80,8 @@ public class Clamp extends Subsystem {
   }
 
   public void dump() {
-    SmartDashboard.putBoolean("open limit", openLimit.get());
-    SmartDashboard.putBoolean("close limit", closeLimit.get());
+    //SmartDashboard.putBoolean("open limit", openLimit.get());
+    //SmartDashboard.putBoolean("close limit", closeLimit.get());
 
     SmartDashboard.putNumber("clamp current", motor.getOutputCurrent());
   }

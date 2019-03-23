@@ -49,6 +49,10 @@ public class DriveTrain extends Subsystem {
   public DriveTrain() {
     super();
 
+    // set talon followers
+    rightMotorFollower.follow(rightMotor);
+    leftMotorFollower.follow(leftMotor);
+
     // set of leader talons
     setUpTalon(leftMotor);
     setUpTalon(rightMotor);
@@ -56,10 +60,9 @@ public class DriveTrain extends Subsystem {
     // invert the right side so they go the right way
     leftMotor.setInverted(true);
     leftMotorFollower.setInverted(true);
-    
-    // set talon followers
-    rightMotorFollower.set(ControlMode.Follower, RobotMap.rightBackMotor);
-    leftMotorFollower.set(ControlMode.Follower, RobotMap.leftBackMotor);
+
+    rightMotorFollower.setInverted(true);
+  
     
     // push drive trains modes to smart dash board
     modeChooser.setDefaultOption("open", DriveTrainMode.OPEN);
@@ -106,17 +109,21 @@ public class DriveTrain extends Subsystem {
    * Runs the teleOp code for the drive train
    */
   public void teleop() {
-    double speed;
-    double turn;
-    if(reversed){
+    double speed = 0;
+    double turn = 0;
+    double speedSlow = OI.driverStick.getRawAxis(2) + 1;
+
+    if (OI.driverStick.getRawButton(5)) {
+      turn = 1;
+    } else if (OI.driverStick.getRawButton(6)) {
+      turn = -1;
+    } else if(reversed){
       speed = -OI.driverStick.getRawAxis(1);
-      turn = -OI.driverStick.getRawAxis(4)/2;
-    }
-    else{
+      turn = -OI.driverStick.getRawAxis(4)/(2 * speedSlow);
+    } else {
       speed = OI.driverStick.getRawAxis(1);
-      turn = -OI.driverStick.getRawAxis(4)/2;
+      turn = -OI.driverStick.getRawAxis(4)/(2 * speedSlow);
     }
-    
     
     if (Math.abs(speed) < .01) {
       speed = 0;

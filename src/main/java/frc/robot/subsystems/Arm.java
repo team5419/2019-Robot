@@ -7,13 +7,15 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.commands.ArmFlipCommand;
 
 public class Arm extends Subsystem {
   public static final TalonSRX motor = new TalonSRX(RobotMap.arm);
 
-  int target = 0;
+  public int target = -1;
+  int max = 2000;
   ArmPosition status = ArmPosition.BACK;
 
   public enum ArmPosition {
@@ -34,6 +36,9 @@ public class Arm extends Subsystem {
   }
 
   public void teleOp() {
+    if (target == -1) {
+      target = motor.getSelectedSensorPosition();
+    }
     double d = OI.operatorStick.getRawAxis(1);
     if (Math.abs(d) < .25) {
       d = 0;
@@ -42,8 +47,11 @@ public class Arm extends Subsystem {
     if (target < 0) {
       target = 0;
     }
-    if (target > 1950) {
-      target = 1950;
+    if (target > max) {
+      target = max;
+    }
+    if (Robot.elevator.target == -500 && Elevator.motor.getSelectedSensorPosition() < -600) {
+      target = max;
     }
     motor.set(ControlMode.MotionMagic, target);
   }
@@ -62,7 +70,7 @@ public class Arm extends Subsystem {
 
     /* set variables for PID loops */
     motor.config_kF(RobotMap.PIDLoopIdx, RobotMap.PIDkF, RobotMap.TimeoutMs);
-		motor.config_kP(RobotMap.PIDLoopIdx, .75, RobotMap.TimeoutMs);
+		motor.config_kP(RobotMap.PIDLoopIdx, 1.5, RobotMap.TimeoutMs);
 		motor.config_kI(RobotMap.PIDLoopIdx, RobotMap.PIDkI, RobotMap.TimeoutMs);
     motor.config_kD(RobotMap.PIDLoopIdx, RobotMap.PIDkD, RobotMap.TimeoutMs);
 
@@ -82,12 +90,12 @@ public class Arm extends Subsystem {
         motor.set(ControlMode.MotionMagic, 0);
       } else if (position == ArmPosition.CENTER) {
         System.out.println("CENTER");
-        int up_pos = 950;
-        target = up_pos;
-        motor.set(ControlMode.MotionMagic, up_pos);
+        int middle_pos = 950;
+        target = middle_pos;
+        motor.set(ControlMode.MotionMagic, middle_pos);
       } else if (position == ArmPosition.FRONT){
         System.out.println("FRONT");
-        int up_pos = 1950;
+        int up_pos = max;
         target = up_pos;
         motor.set(ControlMode.MotionMagic, up_pos); 
       }
