@@ -22,6 +22,7 @@ public class Clamp extends Subsystem {
 		motor.configNominalOutputReverse(0, RobotMap.TimeoutMs);
 		motor.configPeakOutputForward(RobotMap.percent, RobotMap.TimeoutMs);
     motor.configPeakOutputReverse(-RobotMap.percent, RobotMap.TimeoutMs);
+	motor.setSensorPhase(false);
 
     openLimit = new DigitalInput(RobotMap.openLimitSwitch);
     closeLimit = new DigitalInput(RobotMap.closeLimitSwitch);
