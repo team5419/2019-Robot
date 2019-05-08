@@ -21,7 +21,6 @@ public class Elevator extends Subsystem {
 
   public static TalonSRX motorFollower = new TalonSRX(RobotMap.leftElevatorMotor);
   public static TalonSRX motor = new TalonSRX(RobotMap.rightElevatorMotor);
-  // public static TalonSRX motor = new TalonSRX(RobotMap.arm);
 
   public int target = -500;
 
