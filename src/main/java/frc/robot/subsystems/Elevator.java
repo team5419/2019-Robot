@@ -26,7 +26,7 @@ public class Elevator extends Subsystem {
 
   public Elevator() {
     motorFollower.follow(motor);
-    motorFollower.setInverted(true);
+    motorFollower.setInverted(false);
 
     ConfigMotor(motor);
 
