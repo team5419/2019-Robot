@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
-import frc.robot.commands.ArmFlipCommand;
+import frc.robot.commands.ArmTeleOpCommand;
 
 public class Arm extends Subsystem {
   public static final TalonSRX motor = new TalonSRX(RobotMap.arm);
@@ -79,11 +79,11 @@ public class Arm extends Subsystem {
   }
 
   @Override public void initDefaultCommand() {
-    setDefaultCommand(new ArmFlipCommand());
+    setDefaultCommand(new ArmTeleOpCommand());
   }
 
   public void flip(ArmPosition position) {
-    if(Clamp.isGrab){
+    //if(Clamp.isGrab){
       if (position == ArmPosition.BACK) {
         System.out.println("BACK");
         target = 0;
@@ -99,7 +99,7 @@ public class Arm extends Subsystem {
         target = up_pos;
         motor.set(ControlMode.MotionMagic, up_pos); 
       }
-    }
+    //}
   }
 
   public void stop() {

@@ -14,6 +14,7 @@ import frc.robot.subsystems.Clamp;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Lift;
+import frc.robot.subsystems.Vacuum;
 import frc.robot.subsystems.Arm;
 
 public class Robot extends TimedRobot {
@@ -25,6 +26,7 @@ public class Robot extends TimedRobot {
   public static Lift lift;
   public static Clamp clamp;
   public static Arm arm;
+  public static Vacuum vacuum;
 
   public static UsbCamera frontCamera;
   public static UsbCamera backCamera;
@@ -41,6 +43,7 @@ public class Robot extends TimedRobot {
     lift = new Lift();
     clamp = new Clamp();
     arm = new Arm();
+    vacuum = new Vacuum();
 
     // set up camera server
     frontCamera = CameraServer.getInstance().startAutomaticCapture(0);

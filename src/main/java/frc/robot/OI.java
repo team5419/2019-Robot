@@ -3,6 +3,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.buttons.POVButton;
 import frc.robot.commands.ArmFlipCommand;
@@ -21,7 +22,7 @@ import frc.robot.subsystems.Elevator;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
-	public static final ADXRS450_Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
+	//public static final ADXRS450_Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
 	
 	public static final Joystick driverStick = new Joystick(0);
 	public static final Joystick operatorStick = new Joystick(1);
@@ -46,10 +47,13 @@ public class OI {
 	public static final JoystickButton frontArm = new JoystickButton(operatorStick, 6); // 6
 
 	public OI() {
-		gyro.reset();
-		gyro.calibrate(); 
+		//XboxController a = XboxController(1);
+		
 
-		liftUnlockButton.whenPressed(new LiftUnlockCommand());
+		//gyro.reset();
+		//gyro.calibrate(); 
+
+		/*liftUnlockButton.whenPressed(new LiftUnlockCommand());
 		liftJumpButton.whileHeld(new LiftJumpCommand());
 		//liftHoldButton.whileHeld(new LiftHoldCommand());
 
@@ -64,9 +68,9 @@ public class OI {
 		toggleDriverDirection.whenPressed(new DriverFlipDirectionCommand());
 
 		ClampGrabCommand clampRelease = new ClampGrabCommand(ClampGrabCommand.GrabStatus.RELEASE);
-		releaseClampButton.whenPressed(clampRelease);
+		releaseClampButton.whileHeld(clampRelease);
 		ClampGrabCommand clampGrab = new ClampGrabCommand(ClampGrabCommand.GrabStatus.GRAB);
-		grabClampButton.whenPressed(clampGrab);
+		grabClampButton.whileHeld(clampGrab);*/
 	}
 
 	public static void dump() {

@@ -15,7 +15,7 @@ public class DriveTurnCommand extends Command {
 
   // Called just before this Command runs the first time
   @Override protected void initialize() {
-    OI.gyro.reset();
+    //OI.gyro.reset();
     System.out.println("started turning!");
   }
 
@@ -27,11 +27,11 @@ public class DriveTurnCommand extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    double turned = Math.abs(OI.gyro.getAngle());
-    if (turned > degrees) {
-      return true;
-    }
-    return false;
+    //double turned = Math.abs(OI.gyro.getAngle());
+    //if (turned > degrees) {
+    //  return true;
+    //}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            return false;
   }
 
   // Called once after isFinished returns true

@@ -45,14 +45,14 @@ public class ClampGrabCommand extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    if(this.status == GrabStatus.GRAB){
+    /*if(this.status == GrabStatus.GRAB){
       return Clamp.motor.getSensorCollection().isRevLimitSwitchClosed(); 
       //return !Clamp.closeLimit.get();
     }
     else if(this.status == GrabStatus.RELEASE){
       return Clamp.motor.getSensorCollection().isFwdLimitSwitchClosed();
       //return !Clamp.openLimit.get();
-    }
+    }*/
     return false;
   }
 
