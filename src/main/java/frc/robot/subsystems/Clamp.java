@@ -13,7 +13,7 @@ import frc.robot.commands.ClampTeleOpCommand;
  * Add your docs here.
  */
 public class Clamp extends Subsystem {
-  public static TalonSRX motor = new TalonSRX(RobotMap.clamp);
+  public static TalonSRX motor = new TalonSRX(72);
   public static boolean isGrab = false;
   //public static DigitalInput openLimit, closeLimit;
 
@@ -62,7 +62,7 @@ public class Clamp extends Subsystem {
   }
 
   @Override public void initDefaultCommand() {
-    setDefaultCommand(new ClampTeleOpCommand());
+    //setDefaultCommand(new ClampTeleOpCommand());
   }
 
   public void grab() {
@@ -71,12 +71,12 @@ public class Clamp extends Subsystem {
   }
 
   public void release() {
-    motor.set(ControlMode.PercentOutput, .25);
+    //motor.set(ControlMode.PercentOutput, .25);
     isGrab = false;
   }
 
   public void stop() {
-    motor.set(ControlMode.PercentOutput, 0);
+    //motor.set(ControlMode.PercentOutput, 0);
   }
 
   public void dump() {

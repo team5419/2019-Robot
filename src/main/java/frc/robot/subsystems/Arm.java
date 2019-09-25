@@ -39,7 +39,7 @@ public class Arm extends Subsystem {
     if (target == -1) {
       target = motor.getSelectedSensorPosition();
     }
-    double d = OI.operatorStick.getRawAxis(1);
+    double d = OI.operatorStick.getRawAxis(1) * 5;
     if (Math.abs(d) < .25) {
       d = 0;
     }
@@ -47,9 +47,9 @@ public class Arm extends Subsystem {
     if (target < 0) {
       target = 0;
     }
-    if (target > max) {
+    /*if (target > max) {
       target = max;
-    }
+    }*/
     if (Robot.elevator.target == -500 && Elevator.motor.getSelectedSensorPosition() < -600) {
       target = max;
     }
@@ -83,6 +83,7 @@ public class Arm extends Subsystem {
   }
 
   public void flip(ArmPosition position) {
+    System.out.println("flip");
     //if(Clamp.isGrab){
       if (position == ArmPosition.BACK) {
         System.out.println("BACK");

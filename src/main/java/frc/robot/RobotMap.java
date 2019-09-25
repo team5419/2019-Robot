@@ -26,7 +26,7 @@ public class RobotMap {
     // ids of talonSRXs
     public static int leftBackMotor = 10;
     public static int leftFrontMotor = 8;
-    public static int rightBackMotor = 0;
+    public static int rightBackMotor = 12;
     public static int rightFrontMotor = 9;
 
     public static int leftElevatorMotor = 5;

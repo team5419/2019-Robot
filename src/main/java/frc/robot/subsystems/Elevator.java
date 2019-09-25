@@ -36,8 +36,8 @@ public class Elevator extends Subsystem {
 		motorFollower.configPeakOutputForward(RobotMap.percent, RobotMap.TimeoutMs);
 		motorFollower.configPeakOutputReverse(-RobotMap.percent, RobotMap.TimeoutMs);
 
-    motor.setSensorPhase(false);
-    motor.setInverted(true);
+    motor.setSensorPhase(true);
+    motor.setInverted(false);
 
     // Reset Encoder
     motor.setSelectedSensorPosition(0);

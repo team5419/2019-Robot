@@ -25,16 +25,25 @@ public class Vacuum extends Subsystem {
 
         @Override
         protected void execute() {
-            System.out.println("hi");
             // grab
             if (OI.operatorStick.getRawButtonPressed(1)) {
                 motor.set(ControlMode.PercentOutput, 1);
+                // valve.set(false);
+            }
+
+            // valve close
+            if (OI.operatorStick.getRawButtonPressed(3)) {
                 valve.set(false);
             }
 
             // release
             if (OI.operatorStick.getRawButtonPressed(2)) {
                 motor.set(ControlMode.PercentOutput, 0);
+                // valve.set(true);
+            }
+
+            // valve open
+            if (OI.operatorStick.getRawButtonPressed(4)) {
                 valve.set(true);
             }
         }

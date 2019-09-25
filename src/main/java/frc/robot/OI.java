@@ -53,7 +53,7 @@ public class OI {
 		//gyro.reset();
 		//gyro.calibrate(); 
 
-		/*liftUnlockButton.whenPressed(new LiftUnlockCommand());
+		liftUnlockButton.whenPressed(new LiftUnlockCommand());
 		liftJumpButton.whileHeld(new LiftJumpCommand());
 		//liftHoldButton.whileHeld(new LiftHoldCommand());
 
@@ -67,10 +67,10 @@ public class OI {
 
 		toggleDriverDirection.whenPressed(new DriverFlipDirectionCommand());
 
-		ClampGrabCommand clampRelease = new ClampGrabCommand(ClampGrabCommand.GrabStatus.RELEASE);
-		releaseClampButton.whileHeld(clampRelease);
-		ClampGrabCommand clampGrab = new ClampGrabCommand(ClampGrabCommand.GrabStatus.GRAB);
-		grabClampButton.whileHeld(clampGrab);*/
+		//ClampGrabCommand clampRelease = new ClampGrabCommand(ClampGrabCommand.GrabStatus.RELEASE);
+		//releaseClampButton.whileHeld(clampRelease);
+		//ClampGrabCommand clampGrab = new ClampGrabCommand(ClampGrabCommand.GrabStatus.GRAB);
+		//grabClampButton.whileHeld(clampGrab);
 	}
 
 	public static void dump() {
